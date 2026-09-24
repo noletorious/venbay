@@ -5,7 +5,8 @@
     <trading-card
       card=card
       code=`${rowLetters[Math.floor(i / 5)] || "?"}${(i % 5) + 1}`
-      onSelect=input.onSelect
+      onHover=input.onHover
+      onLeaveHover=input.onLeaveHover
     />
   </for>
 </div>

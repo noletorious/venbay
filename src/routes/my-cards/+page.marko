@@ -1,0 +1,54 @@
+client import { getPurchasedCards } from "../../lib/purchased-cards";
+
+<let/purchased=[]>
+
+<script>
+  purchased = getPurchasedCards();
+</script>
+
+<main class="my-cards">
+  <a href="/" class="my-cards__back">← Back to list</a>
+  <h1>My Cards</h1>
+
+  <if=purchased.length>
+    <div class="my-cards__grid">
+      <for|item| of=purchased>
+        <trading-card card=item.card code=item.code/>
+      </for>
+    </div>
+  </if>
+  <else>
+    <p>No cards purchased yet. Dial a code on the vending machine to get started.</p>
+  </else>
+</main>
+
+<style>
+  .my-cards {
+    padding: 1rem;
+  }
+
+  .my-cards__back {
+    color: var(--text-color);
+    opacity: 0.7;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .my-cards__back:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .my-cards__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .my-cards__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

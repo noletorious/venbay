@@ -1,0 +1,180 @@
+client import { addPurchasedCard } from "../../../lib/purchased-cards";
+
+<const/card=$global.data.card/>
+<const/code=$global.data.code/>
+
+<main class="detail">
+  <if=card>
+    <const/name=card.alt_description || card.description || "Untitled"/>
+    <const/photographer=card.user.name/>
+
+    <div class="detail__content">
+      <a href="/" class="detail__back">← Back to list</a>
+
+      <img src=card.urls.regular alt=name class="detail__image">
+
+      <div class="detail__body">
+        <div class="detail__header">
+          <p class="detail__name">${name}</p>
+          <span class="detail__hp">♥ ${card.likes}</span>
+        </div>
+
+        <div class="detail__meta">
+          <span class="detail__type">Photo Card</span>
+          <span class="detail__dims">${card.width}×${card.height}</span>
+        </div>
+
+        <p class="detail__prompt">
+          Confirm the code
+          <strong class="detail__code">${code || "?"}</strong>
+          on the keypad and hit dispense to purchase this card.
+        </p>
+
+        <a
+          href=`${card.links.html}?utm_source=venbay&utm_medium=referral`
+          target="_blank"
+          rel="noopener"
+          class="detail__credit"
+        >
+          Photo by ${photographer} on Unsplash
+        </a>
+      </div>
+    </div>
+  </if>
+  <else>
+    <div class="detail__content">
+      <a href="/" class="detail__back">← Back to list</a>
+      <p>Couldn't find that card. It may have already been dispensed.</p>
+    </div>
+  </else>
+
+  <aside class="detail__machine">
+    <vending-machine
+      initialRow=code ? code[0] : null
+      initialCol=code ? Number(code.slice(1)) : null
+      onDispense() {
+        addPurchasedCard(card, code);
+        window.location.href = "/my-cards";
+      }
+    />
+  </aside>
+</main>
+
+<style>
+  .detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .detail__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .detail__body {
+    max-width: 480px;
+  }
+
+  .detail__back {
+    color: var(--text-color);
+    opacity: 0.7;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .detail__back:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .detail__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+  }
+
+  .detail__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .detail__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .detail__name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .detail__hp {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--card-accent, currentColor);
+  }
+
+  .detail__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .detail__type {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--hover-bg);
+  }
+
+  .detail__dims {
+    font-size: 0.8125rem;
+    opacity: 0.6;
+  }
+
+  .detail__prompt {
+    margin: 0.25rem 0 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .detail__code {
+    font-family: "Courier New", monospace;
+    font-size: 1.125rem;
+    letter-spacing: 0.05em;
+  }
+
+  .detail__credit {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    color: inherit;
+  }
+
+  .detail__credit:hover {
+    opacity: 0.9;
+  }
+
+  .detail__machine {
+    flex: 0 0 320px;
+    position: sticky;
+    top: calc(var(--header-height, 64px) + 1rem);
+    height: calc(100vh - var(--header-height, 64px) - 2rem);
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+  }
+</style>

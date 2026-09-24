@@ -1,30 +1,56 @@
-<let/selected=null>
+<let/selectedRow=null>
+<let/selectedCol=null>
+<let/hoverRow=null>
+<let/hoverCol=null>
+
+<const/rowLetters=["A", "B", "C", "D", "E"]/>
 
 <main class="home">
-  <div class="home__cards">
-    <await|cards|=$global.data.cards>
+  <await|cards|=$global.data.cards>
+    <const/codeToId=Object.fromEntries(
+      cards.map((c, i) => [`${rowLetters[Math.floor(i / 5)]}${(i % 5) + 1}`, c.id])
+    )/>
+
+    <div class="home__cards">
       <card-grid
         cards=cards
-        onSelect(card, code) {
-          selected = { card, code };
+        onHover(card, code) {
+          hoverRow = code[0];
+          hoverCol = Number(code.slice(1));
+        }
+        onLeaveHover() {
+          hoverRow = null;
+          hoverCol = null;
         }
       />
-    </await>
-  </div>
-  <aside class="home__machine">
-    <vending-machine/>
-  </aside>
-</main>
+    </div>
 
-<if=selected>
-  <card-modal
-    card=selected.card
-    code=selected.code
-    onClose() {
-      selected = null;
-    }
-  />
-</if>
+    <aside class="home__machine">
+      <vending-machine
+        row=selectedRow
+        col=selectedCol
+        hoverRow=hoverRow
+        hoverCol=hoverCol
+        onSelectRow(r) {
+          selectedRow = r;
+          const code = `${r}${selectedCol}`;
+          const id = selectedCol && codeToId[code];
+          if (id) {
+            window.location.href = `/card/${id}?code=${code}`;
+          }
+        }
+        onSelectCol(c) {
+          selectedCol = c;
+          const code = `${selectedRow}${c}`;
+          const id = selectedRow && codeToId[code];
+          if (id) {
+            window.location.href = `/card/${id}?code=${code}`;
+          }
+        }
+      />
+    </aside>
+  </await>
+</main>
 
 <style>
   .home {
@@ -40,8 +66,7 @@
   }
 
   .home__machine {
-    flex: 1 0 0;
-    min-width: 220px;
+    flex: 0 0 320px;
     position: sticky;
     top: calc(var(--header-height, 64px) + 1rem);
     height: calc(100vh - var(--header-height, 64px) - 2rem);

@@ -1,9 +1,11 @@
 <let/credits=25>
-<let/row=null>
-<let/col=null>
+<let/internalRow=input.initialRow ?? null>
+<let/internalCol=input.initialCol ?? null>
 
 <const/rows=["A", "B", "C", "D", "E"]/>
 <const/cols=[1, 2, 3, 4, 5]/>
+<const/row=input.row !== undefined ? input.row : internalRow/>
+<const/col=input.col !== undefined ? input.col : internalCol/>
 <const/selection=row && col ? `${row}${col}` : null/>
 
 <div class="vending-machine">
@@ -26,9 +28,13 @@
     <for|r| of=rows>
       <button
         type="button"
-        class=`vending-machine__key ${row === r ? "vending-machine__key--active" : ""}`
+        class=`vending-machine__key ${row === r ? "vending-machine__key--active" : input.hoverRow === r ? "vending-machine__key--hover-selected" : ""}`
         onClick() {
-          row = r;
+          if (input.onSelectRow) {
+            input.onSelectRow(r);
+          } else {
+            internalRow = r;
+          }
         }
       >
         ${r}
@@ -37,24 +43,30 @@
     <for|c| of=cols>
       <button
         type="button"
-        class=`vending-machine__key ${col === c ? "vending-machine__key--active" : ""}`
+        class=`vending-machine__key ${col === c ? "vending-machine__key--active" : input.hoverCol === c ? "vending-machine__key--hover-selected" : ""}`
         onClick() {
-          col = c;
+          if (input.onSelectCol) {
+            input.onSelectCol(c);
+          } else {
+            internalCol = c;
+          }
         }
       >
         ${c}
       </button>
     </for>
-  </div>
 
-  <venbay-button
-    label="Dispense"
-    icon="⏏"
-    disabled=!selection
-    onClick() {
-      // purchase flow wired up later
-    }
-  />
+    <div class="vending-machine__dispense">
+      <venbay-button
+        label="Dispense"
+        icon="⏏"
+        disabled=!input.onDispense || !selection
+        onClick() {
+          input.onDispense?.(selection);
+        }
+      />
+    </div>
+  </div>
 </div>
 
 <style>
@@ -117,19 +129,35 @@
     font-weight: 700;
     font-size: 1.125rem;
     cursor: pointer;
-    transition: background 0.05s ease;
+    transition: filter 0.05s ease;
   }
 
   .vending-machine__key:hover {
-    background: var(--hover-bg);
+    filter: brightness(0.92);
   }
 
   .vending-machine__key:active {
-    filter: brightness(0.95);
+    filter: brightness(0.85);
   }
 
   .vending-machine__key--active {
     background: var(--card-accent, #4c9aff);
     color: #fff;
+  }
+
+  .vending-machine__key--hover-selected {
+    box-shadow: inset 0 0 0 2px var(--card-accent, #4c9aff);
+    color: var(--card-accent, #4c9aff);
+  }
+
+  .vending-machine__dispense {
+    grid-column: 1 / -1;
+    background: var(--bg-color);
+  }
+
+  .vending-machine__dispense button {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
   }
 </style>

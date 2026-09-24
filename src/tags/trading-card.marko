@@ -4,17 +4,19 @@
 <div
   class=`trading-card ${input.rare ? "trading-card--rare" : ""}`
   style=`--card-accent:${input.card.color}`
-  role="button"
   tabindex="0"
-  aria-label=`View ${name}, code ${input.code}`
-  onClick() {
-    input.onSelect?.(input.card, input.code);
+  aria-label=`${name}, code ${input.code}`
+  onMouseenter() {
+    input.onHover?.(input.card, input.code);
   }
-  onKeydown(e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      input.onSelect?.(input.card, input.code);
-    }
+  onMouseleave() {
+    input.onLeaveHover?.();
+  }
+  onFocus() {
+    input.onHover?.(input.card, input.code);
+  }
+  onBlur() {
+    input.onLeaveHover?.();
   }
 >
   <div class="trading-card__frame">
@@ -55,13 +57,7 @@
     padding: 3px;
     border-radius: 12px;
     background: linear-gradient(160deg, var(--card-accent, #ccc), transparent 60%);
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .trading-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .trading-card:focus-visible {
