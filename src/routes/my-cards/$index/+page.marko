@@ -1,0 +1,63 @@
+client import { getPurchasedCards } from "../../../lib/purchased-cards";
+
+<let/item=null>
+<let/loaded=false>
+
+<script>
+  const segments = window.location.pathname.split("/");
+  const index = Number(segments[segments.length - 1]);
+  const purchased = getPurchasedCards();
+  item = purchased[index] ?? null;
+  loaded = true;
+</script>
+
+<main class="showcase">
+  <a href="/my-cards" class="showcase__back">← Back to My Cards</a>
+
+  <if=loaded && !item>
+    <p>Couldn't find that card.</p>
+  </if>
+  <else-if=item>
+    <div class="showcase__stage">
+      <trading-card card=item.card code=item.code detailed=true/>
+    </div>
+  </else-if>
+</main>
+
+<style>
+  .showcase {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 1rem;
+    background: radial-gradient(
+      120% 90% at 30% 15%,
+      color-mix(in srgb, var(--text-color) 10%, transparent),
+      transparent 60%
+    );
+  }
+
+  .showcase__back {
+    color: var(--text-color);
+    opacity: 0.7;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .showcase__back:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .showcase__stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 4rem);
+    perspective: 1200px;
+  }
+
+  .showcase__stage trading-card {
+    transform: rotateY(-10deg) rotateX(6deg);
+    filter: drop-shadow(24px 32px 24px rgba(0, 0, 0, 0.35));
+  }
+</style>

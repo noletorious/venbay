@@ -1,6 +1,9 @@
+client import { addCredits } from "../lib/credits";
+
 <let/internalCredits=25>
 <let/internalRow=input.initialRow ?? null>
 <let/internalCol=input.initialCol ?? null>
+<let/showTopUp=false>
 
 <const/rows=["A", "B", "C", "D", "E"]/>
 <const/cols=[1, 2, 3, 4, 5]/>
@@ -24,8 +27,24 @@
     </div>
 
     <p class="vending-machine__hint">
-      Need more credits? They top up automatically over time.
+      <if=insufficientCredits>
+        <button type="button" class="vending-machine__topup-link vending-machine__topup-link--warn" onClick() { showTopUp = true; }><strong>You need more credits</strong></button>
+      </if>
+      <else>
+        <button type="button" class="vending-machine__topup-link" onClick() { showTopUp = true; }><em>Need more credits?</em></button>
+      </else>
     </p>
+
+    <if=showTopUp>
+      <credit-topup-modal
+        credits=credits
+        onAdd(amount) {
+          const next = addCredits(amount);
+          input.onCreditsChange?.(next);
+        }
+        onClose() { showTopUp = false; }
+      />
+    </if>
   </div>
 
   <div class="vending-machine__keypad">
@@ -122,6 +141,23 @@
     margin: 0;
     font-size: 0.75rem;
     opacity: 0.7;
+  }
+
+  .vending-machine__topup-link {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--card-accent, #4c9aff);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .vending-machine__topup-link:hover {
+    text-decoration: underline;
+  }
+
+  .vending-machine__topup-link--warn {
+    color: #d64545;
   }
 
   .vending-machine__info {

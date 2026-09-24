@@ -1,30 +1,60 @@
 client import { getPurchasedCards, removePurchasedCard } from "../../lib/purchased-cards";
 
 <let/purchased=[]>
+<let/openMenu=null>
+<let/confirmDiscard=null>
 
 <script>
   purchased = getPurchasedCards();
 </script>
 
-<main class="my-cards">
+<main class="my-cards" onClick() { openMenu = null; }>
   <a href="/" class="my-cards__back">← Back to list</a>
-  <h1>My Cards</h1>
+  <div class="my-cards__heading">
+    <h1>My Cards</h1>
+    <span class="my-cards__count">${purchased.length}</span>
+  </div>
 
   <if=purchased.length>
     <div class="my-cards__grid">
       <for|item, i| of=purchased>
         <div class="my-cards__item">
-          <trading-card card=item.card code=item.code/>
-          <button
-            type="button"
-            class="my-cards__discard"
-            onClick() {
-              removePurchasedCard(i);
-              purchased = getPurchasedCards();
-            }
-          >
-            ✕ Throw away
-          </button>
+          <trading-card card=item.card code=item.code hideCode=true>
+            <@menu>
+              <div class="my-cards__actions">
+                <button
+                  type="button"
+                  class="my-cards__menu-btn"
+                  aria-label="Card options"
+                  aria-expanded=openMenu === i
+                  onClick(e) {
+                    e.stopPropagation();
+                    openMenu = openMenu === i ? null : i;
+                  }
+                >
+                  ⋮
+                </button>
+
+                <if=openMenu === i>
+                  <div class="my-cards__menu" onClick(e) { e.stopPropagation(); }>
+                    <a href=`/my-cards/${i}` class="my-cards__menu-item">
+                      View showcase
+                    </a>
+                    <button
+                      type="button"
+                      class="my-cards__menu-item my-cards__menu-item--danger"
+                      onClick() {
+                        confirmDiscard = i;
+                        openMenu = null;
+                      }
+                    >
+                      Throw away
+                    </button>
+                  </div>
+                </if>
+              </div>
+            </@menu>
+          </trading-card>
         </div>
       </for>
     </div>
@@ -32,6 +62,47 @@ client import { getPurchasedCards, removePurchasedCard } from "../../lib/purchas
   <else>
     <p>No cards purchased yet. Dial a code on the vending machine to get started.</p>
   </else>
+
+  <if=confirmDiscard !== null>
+    <div
+      class="my-cards__confirm"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Confirm throw away"
+      onClick(e) {
+        e.stopPropagation();
+        if (e.target === e.currentTarget) {
+          confirmDiscard = null;
+        }
+      }
+      onKeydown(e) {
+        if (e.key === "Escape") {
+          confirmDiscard = null;
+        }
+      }
+    >
+      <div class="my-cards__confirm-panel">
+        <p class="my-cards__confirm-title">Throw away this card?</p>
+        <p class="my-cards__confirm-body">This can't be undone.</p>
+        <div class="my-cards__confirm-actions">
+          <venbay-button
+            label="Cancel"
+            variant="secondary"
+            onClick() { confirmDiscard = null; }
+          />
+          <venbay-button
+            label="Throw away"
+            variant="primary"
+            onClick() {
+              removePurchasedCard(confirmDiscard);
+              purchased = getPurchasedCards();
+              confirmDiscard = null;
+            }
+          />
+        </div>
+      </div>
+    </div>
+  </if>
 </main>
 
 <style>
@@ -51,6 +122,22 @@ client import { getPurchasedCards, removePurchasedCard } from "../../lib/purchas
     text-decoration: underline;
   }
 
+  .my-cards__heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .my-cards__heading h1 {
+    margin: 0;
+  }
+
+  .my-cards__count {
+    font-size: 0.875rem;
+    font-weight: 700;
+    opacity: 0.6;
+  }
+
   .my-cards__grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -58,29 +145,106 @@ client import { getPurchasedCards, removePurchasedCard } from "../../lib/purchas
     margin-top: 1rem;
   }
 
-  .my-cards__item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
+  .my-cards__actions {
+    position: relative;
   }
 
-  .my-cards__discard {
-    padding: 0.375rem;
-    border: 1px solid var(--border-color, #e5e5e5);
+  .my-cards__menu-btn {
+    width: 26px;
+    height: 26px;
+    border: none;
     border-radius: 6px;
-    background: transparent;
-    color: var(--text-color);
-    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 1.125rem;
+    line-height: 1;
     cursor: pointer;
   }
 
-  .my-cards__discard:hover {
+  .my-cards__menu-btn:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  .my-cards__menu {
+    position: absolute;
+    bottom: calc(100% + 0.25rem);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    border: 1px solid var(--border-color, #e5e5e5);
+    border-radius: 8px;
+    background: var(--bg-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .my-cards__menu-item {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 0.8125rem;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .my-cards__menu-item:hover {
     background: var(--hover-bg);
+  }
+
+  .my-cards__menu-item--danger {
+    color: #d64545;
   }
 
   @media (max-width: 700px) {
     .my-cards__grid {
       grid-template-columns: repeat(2, 1fr);
     }
+  }
+
+  .my-cards__confirm {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+  }
+
+  .my-cards__confirm-panel {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 12px;
+    background: var(--bg-color, #fff);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .my-cards__confirm-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .my-cards__confirm-body {
+    margin: 0;
+    font-size: 0.8125rem;
+    opacity: 0.7;
+  }
+
+  .my-cards__confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
   }
 </style>

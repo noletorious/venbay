@@ -42,6 +42,7 @@ import { getCardCost } from "../lib/card-cost";
         hoverCol=hoverCol
         credits=credits
         minCost=minCost
+        onCreditsChange(next) { credits = next; }
         onSelectRow(r) {
           selectedRow = r;
           const code = `${r}${selectedCol}`;

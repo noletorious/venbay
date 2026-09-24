@@ -36,6 +36,7 @@ import { getCardCost } from "../../../lib/card-cost";
       initialCol=code ? Number(code.slice(1)) : null
       credits=credits
       minCost=cost
+      onCreditsChange(next) { credits = next; }
       onDispense() {
         addPurchasedCard(card, code);
         spendCredits(cost);

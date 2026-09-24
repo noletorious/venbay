@@ -1,0 +1,297 @@
+client import { MAX_CREDITS } from "../lib/credits";
+
+<let/amount=Math.min(20, MAX_CREDITS - input.credits)>
+<let/payMethod="card">
+
+<const/room=MAX_CREDITS - input.credits/>
+<const/presets=[10, 25, 50, 100].filter((n) => n <= room)/>
+
+<div
+  class="credit-topup"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Add credits"
+  onClick(e) {
+    if (e.target === e.currentTarget) {
+      input.onClose?.();
+    }
+  }
+  onKeydown(e) {
+    if (e.key === "Escape") {
+      input.onClose?.();
+    }
+  }
+>
+  <div class="credit-topup__panel">
+    <button type="button" class="credit-topup__close" aria-label="Close" onClick() { input.onClose?.(); }>✕</button>
+
+    <p class="credit-topup__title">Add credits</p>
+    <p class="credit-topup__balance">Balance: ${input.credits} / ${MAX_CREDITS}</p>
+    <p class="credit-topup__note">Credits top up with 6 credits per day at 12:00p PST. Max of ${MAX_CREDITS} credits.</p>
+
+    <if=room <= 0>
+      <p class="credit-topup__maxed">You're already at the max of ${MAX_CREDITS} credits.</p>
+    </if>
+    <else>
+      <div class="credit-topup__presets">
+        <for|n| of=presets>
+          <button
+            type="button"
+            class=`credit-topup__preset ${amount === n ? "credit-topup__preset--active" : ""}`
+            onClick() { amount = n; }
+          >
+            +${n}
+          </button>
+        </for>
+      </div>
+
+      <div class="credit-topup__tabs">
+        <button
+          type="button"
+          class=`credit-topup__tab ${payMethod === "card" ? "credit-topup__tab--active" : ""}`
+          onClick() { payMethod = "card"; }
+        >
+          Card
+        </button>
+        <button
+          type="button"
+          class=`credit-topup__tab ${payMethod === "apple" ? "credit-topup__tab--active" : ""}`
+          onClick() { payMethod = "apple"; }
+        >
+          Apple Pay
+        </button>
+      </div>
+
+      <if=payMethod === "card">
+        <div class="credit-topup__form">
+          <label class="credit-topup__field">
+            <span>Cardholder name</span>
+            <input type="text" value="Jane Doe" readonly>
+          </label>
+          <label class="credit-topup__field">
+            <span>Card number</span>
+            <input type="text" value="4242 4242 4242 4242" readonly>
+          </label>
+          <div class="credit-topup__row">
+            <label class="credit-topup__field">
+              <span>Expiry</span>
+              <input type="text" value="12/34" readonly>
+            </label>
+            <label class="credit-topup__field">
+              <span>CVC</span>
+              <input type="text" value="123" readonly>
+            </label>
+          </div>
+        </div>
+      </if>
+      <else>
+        <div class="credit-topup__apple">
+          <div class="credit-topup__qr" aria-hidden="true">
+            <for|i| of=Array.from({ length: 49 })>
+              <span class=`credit-topup__qr-cell ${(i * 7 + Math.floor(i / 7)) % 3 === 0 ? "credit-topup__qr-cell--on" : ""}`></span>
+            </for>
+          </div>
+          <p class="credit-topup__apple-hint">Scan with your phone to pay</p>
+          <a href="#" class="credit-topup__apple-link" onClick(e) { e.preventDefault(); }>
+            pay.apple.com/venbay/checkout/demo-${input.credits}
+          </a>
+        </div>
+      </else>
+
+      <venbay-button
+        label=`Add ${amount} credits`
+        disabled=amount <= 0
+        onClick() {
+          input.onAdd?.(amount);
+          input.onClose?.();
+        }
+      />
+    </else>
+  </div>
+</div>
+
+<style>
+  .credit-topup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 200;
+  }
+
+  .credit-topup__panel {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    border-radius: 12px;
+    background: var(--bg-color, #fff);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .credit-topup__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .credit-topup__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .credit-topup__balance {
+    margin: 0;
+    font-size: 0.8125rem;
+    opacity: 0.7;
+  }
+
+  .credit-topup__note {
+    margin: 0;
+    padding: 0.5rem 0.625rem;
+    border-radius: 6px;
+    background: var(--hover-bg);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    opacity: 0.75;
+  }
+
+  .credit-topup__maxed {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+
+  .credit-topup__presets {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .credit-topup__preset {
+    padding: 0.5rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color, #e5e5e5);
+    background: transparent;
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .credit-topup__preset--active {
+    background: var(--card-accent, #4c9aff);
+    border-color: var(--card-accent, #4c9aff);
+    color: #fff;
+  }
+
+  .credit-topup__tabs {
+    display: flex;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border-color, #e5e5e5);
+  }
+
+  .credit-topup__tab {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+
+  .credit-topup__tab--active {
+    opacity: 1;
+    border-bottom-color: var(--card-accent, #4c9aff);
+  }
+
+  .credit-topup__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .credit-topup__row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .credit-topup__field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  .credit-topup__field input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #e5e5e5);
+    background: var(--hover-bg);
+    color: var(--text-color);
+    font-family: "Courier New", monospace;
+  }
+
+  .credit-topup__apple {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0 0.25rem;
+  }
+
+  .credit-topup__qr {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 140px;
+    height: 140px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .credit-topup__qr-cell {
+    background: transparent;
+  }
+
+  .credit-topup__qr-cell--on {
+    background: #0d0d0d;
+  }
+
+  .credit-topup__apple-hint {
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .credit-topup__apple-link {
+    font-size: 0.75rem;
+    color: var(--card-accent, #4c9aff);
+    text-decoration: none;
+  }
+
+  .credit-topup__apple-link:hover {
+    text-decoration: underline;
+  }
+</style>
