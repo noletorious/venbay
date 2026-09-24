@@ -2,6 +2,14 @@
 
 Tracks the phase-1 build order from `INITIAL-PROMPT.MD`, plus what's queued up next. Mainly for prep — what to think through before we touch code on the next thing.
 
+**When asked "what's next," reference the "Up next" list below first.**
+
+## Up next (in order)
+
+1. **Storybook refinement + testing** — flesh out Storybook further (more component coverage/configurations per the original ask: themes, a11y checks, custom button text+icon), then set up Vitest + `@marko/testing-library` for unit tests.
+2. **Possible reup on credits flow** — revisit how credits work (top-up mechanism is still just decorative copy right now — see "Known gaps" below).
+3. **Figma flow documentation** — Noel documents the determined UX flow in Figma, links it into `general-approach-notes.md`, which he'll adjust himself from there.
+
 ## Phase 1 build order
 
 - [x] 1. Build scaffold
