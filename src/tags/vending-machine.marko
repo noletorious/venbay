@@ -100,44 +100,37 @@
   .vending-machine__keypad {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.5rem;
-    padding: 0.75rem;
-    background: var(--hover-bg);
+    gap: 1px;
+    background: var(--border-color, #e5e5e5);
+    border: 1px solid var(--border-color, #e5e5e5);
     border-radius: 8px;
+    overflow: hidden;
     flex: 1;
-    align-content: start;
   }
 
   .vending-machine__key {
     aspect-ratio: 1;
     border: none;
-    border-radius: 6px;
     background: var(--bg-color);
     color: var(--text-color);
     font-family: "Courier New", monospace;
     font-weight: 700;
     font-size: 1.125rem;
     cursor: pointer;
-    box-shadow:
-      0 3px 0 var(--border-color, #ccc),
-      0 4px 4px rgba(0, 0, 0, 0.25);
-    transition: transform 0.05s ease, box-shadow 0.05s ease;
+    transition: background 0.05s ease;
   }
 
   .vending-machine__key:hover {
-    filter: brightness(1.05);
+    background: var(--hover-bg);
   }
 
   .vending-machine__key:active {
-    transform: translateY(3px);
-    box-shadow: 0 0 0 var(--border-color, #ccc);
+    filter: brightness(0.95);
   }
 
   .vending-machine__key--active {
     background: var(--card-accent, #4c9aff);
     color: #fff;
-    transform: translateY(3px);
-    box-shadow: 0 0 0 var(--border-color, #ccc);
   }
 
   .vending-machine__dispense {

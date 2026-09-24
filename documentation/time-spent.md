@@ -6,3 +6,4 @@
 9:10p - 9:24p building out scaffold, `npm create marko`, gitignore, README
 9:24p - 9:43p build app-header (search, theme toggle), clean up home page
 10:24p - 10:49p build out connection to unsplash, trading card styling
+10:49p - 11:29p vending machine keypad, search with suggestions, venbay logo
