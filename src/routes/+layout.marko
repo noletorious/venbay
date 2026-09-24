@@ -8,7 +8,7 @@
     <title>${$global.meta.pageTitle || "Marko"}</title>
   </head>
   <body>
-    <app-header/>
+    <app-header query=$global.data.query/>
     <${input.content}/>
   </body>
 </html>

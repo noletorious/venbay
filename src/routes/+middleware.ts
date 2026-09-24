@@ -4,7 +4,16 @@ import type {} from "@marko/run";
 config({ path: ".env.local" });
 
 export default Run.ALL(async (ctx, next) => {
-  const url = new URL("https://api.unsplash.com/photos/random");
+  const query = ctx.url.searchParams.get("q")?.trim();
+
+  const url = query
+    ? new URL("https://api.unsplash.com/search/photos")
+    : new URL("https://api.unsplash.com/photos/random");
+
+  if (query) {
+    url.searchParams.set("query", query);
+  }
+  url.searchParams.set("per_page", "25");
   url.searchParams.set("count", "25");
 
   const res = await fetch(url, {
@@ -14,7 +23,8 @@ export default Run.ALL(async (ctx, next) => {
     },
   });
 
-  const cards = res.ok ? await res.json() : [];
+  const body = res.ok ? await res.json() : [];
+  const cards = query ? body.results : body;
 
-  return next({ cards });
+  return next({ cards, query: query ?? "" });
 });

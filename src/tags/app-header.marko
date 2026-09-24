@@ -1,6 +1,16 @@
+<const/suggestions=[
+  "nature", "architecture", "animals", "ocean", "mountains",
+  "city", "food", "technology", "space", "abstract", "travel", "minimal",
+]/>
+
 <let/searching=false>
 <let/theme="light">
-<let/query="">
+<let/query=input.query || ""/>
+<let/showSuggestions=false>
+
+<const/filteredSuggestions=suggestions
+  .filter((s) => s.toLowerCase().includes(query.toLowerCase()))
+  .slice(0, 6)/>
 
 <header class="app-header">
   <div class="app-header__left">
@@ -8,21 +18,53 @@
       <span class="app-header__search-label">Search</span>
     </if>
     <else>
-      <img src="../assets/ebay-logo.webp" alt="eBay" class="app-header__logo">
+      <img src="../assets/venbay.svg" alt="venbay" class="app-header__logo">
     </else>
   </div>
 
   <div class="app-header__center">
     <if=searching>
-      <input
-        type="text"
-        class="app-header__search-input"
-        placeholder="Search photo cards..."
-        value=query
-        onInput(e) {
-          query = e.target.value;
-        }
+      <form
+        class="app-header__search-form"
+        method="GET"
+        action="/"
       >
+        <input
+          type="text"
+          name="q"
+          class="app-header__search-input"
+          placeholder="Search photo cards..."
+          value=query
+          autofocus
+          autocomplete="off"
+          onInput(e) {
+            query = e.target.value;
+            showSuggestions = true;
+          }
+          onFocus() {
+            showSuggestions = true;
+          }
+          onBlur() {
+            showSuggestions = false;
+          }
+        >
+        <if=(showSuggestions && filteredSuggestions.length)>
+          <ul class="app-header__suggestions">
+            <for|s| of=filteredSuggestions>
+              <li>
+                <button
+                  type="submit"
+                  name="q"
+                  value=s
+                  class="app-header__suggestion"
+                >
+                  ${s}
+                </button>
+              </li>
+            </for>
+          </ul>
+        </if>
+      </form>
     </if>
   </div>
 
@@ -104,13 +146,53 @@
     font-weight: 600;
   }
 
-  .app-header__search-input {
+  .app-header__search-form {
+    position: relative;
     width: 100%;
     max-width: 480px;
+  }
+
+  .app-header__search-input {
+    width: 100%;
+    box-sizing: border-box;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--border-color, #e5e5e5);
     border-radius: 4px;
     font-size: 1rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .app-header__suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color, #e5e5e5);
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+  }
+
+  .app-header__suggestion {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    text-align: left;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .app-header__suggestion:hover {
+    background: var(--hover-bg);
   }
 
   .app-header__icon-btn {
