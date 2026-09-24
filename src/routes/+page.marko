@@ -5,13 +5,14 @@
     </await>
   </div>
   <aside class="home__machine">
-    <p>Vending machine coming soon.</p>
+    <vending-machine/>
   </aside>
 </main>
 
 <style>
   .home {
     display: flex;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1rem;
   }
@@ -24,5 +25,10 @@
   .home__machine {
     flex: 1 0 0;
     min-width: 220px;
+    position: sticky;
+    top: calc(var(--header-height, 64px) + 1rem);
+    height: calc(100vh - var(--header-height, 64px) - 2rem);
+    padding-bottom: 2rem;
+    box-sizing: border-box;
   }
 </style>

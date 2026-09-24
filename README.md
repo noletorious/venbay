@@ -2,6 +2,8 @@
 
 eBay's vending machine — buy digital trading cards sourced from the Unsplash API. Each card is styled like a trading card (unique name, image, type, stats), bought with credits earned over time. Built with [Marko](https://markojs.com) and [@marko/run](https://github.com/marko-js/run).
 
+The concept is that cards can be other things, like digital assets, ebay products, NFTs, etc.
+
 See [documentation/INITIAL-PROMPT.MD](documentation/INITIAL-PROMPT.MD) for full project scope.
 
 ## Getting started

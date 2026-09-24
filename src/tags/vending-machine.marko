@@ -1,0 +1,166 @@
+<let/credits=25>
+<let/row=null>
+<let/col=null>
+
+<const/rows=["A", "B", "C", "D", "E"]/>
+<const/cols=[1, 2, 3, 4, 5]/>
+<const/selection=row && col ? `${row}${col}` : null/>
+
+<div class="vending-machine">
+  <div class="vending-machine__screen">
+    <if=selection>
+      <p class="vending-machine__screen-label">Selected</p>
+      <p class="vending-machine__screen-value">${selection}</p>
+    </if>
+    <else>
+      <p class="vending-machine__screen-label">Credits</p>
+      <p class="vending-machine__screen-value">${credits}</p>
+    </else>
+  </div>
+
+  <p class="vending-machine__hint">
+    Need more credits? They top up automatically over time.
+  </p>
+
+  <div class="vending-machine__keypad">
+    <for|r| of=rows>
+      <button
+        type="button"
+        class=`vending-machine__key ${row === r ? "vending-machine__key--active" : ""}`
+        onClick() {
+          row = r;
+        }
+      >
+        ${r}
+      </button>
+    </for>
+    <for|c| of=cols>
+      <button
+        type="button"
+        class=`vending-machine__key ${col === c ? "vending-machine__key--active" : ""}`
+        onClick() {
+          col = c;
+        }
+      >
+        ${c}
+      </button>
+    </for>
+  </div>
+
+  <button
+    type="button"
+    class="vending-machine__dispense"
+    disabled=!selection
+    aria-label="Dispense"
+  >
+    ⏏ Dispense
+  </button>
+</div>
+
+<style>
+  .vending-machine {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color, #e5e5e5);
+    border-radius: 12px;
+  }
+
+  .vending-machine__screen {
+    background: #0d1b0f;
+    color: #7dffa0;
+    border-radius: 6px;
+    padding: 0.75rem;
+    text-align: center;
+    font-family: "Courier New", monospace;
+  }
+
+  .vending-machine__screen-label {
+    margin: 0;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.75;
+  }
+
+  .vending-machine__screen-value {
+    margin: 0.125rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .vending-machine__hint {
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .vending-machine__keypad {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--hover-bg);
+    border-radius: 8px;
+    flex: 1;
+    align-content: start;
+  }
+
+  .vending-machine__key {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+    font-size: 1.125rem;
+    cursor: pointer;
+    box-shadow:
+      0 3px 0 var(--border-color, #ccc),
+      0 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  .vending-machine__key:hover {
+    filter: brightness(1.05);
+  }
+
+  .vending-machine__key:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 var(--border-color, #ccc);
+  }
+
+  .vending-machine__key--active {
+    background: var(--card-accent, #4c9aff);
+    color: #fff;
+    transform: translateY(3px);
+    box-shadow: 0 0 0 var(--border-color, #ccc);
+  }
+
+  .vending-machine__dispense {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    background: var(--text-color);
+    color: var(--bg-color);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  .vending-machine__dispense:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .vending-machine__dispense:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+</style>
