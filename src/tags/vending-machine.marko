@@ -147,17 +147,24 @@ client import { addCredits } from "../lib/credits";
     padding: 0;
     border: none;
     background: none;
-    color: var(--card-accent, #4c9aff);
+    color: #2f6fed;
     font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
     cursor: pointer;
   }
 
   .vending-machine__topup-link:hover {
-    text-decoration: underline;
+    color: #1d4fc4;
   }
 
   .vending-machine__topup-link--warn {
-    color: #d64545;
+    color: #d6423f;
+  }
+
+  .vending-machine__topup-link--warn:hover {
+    color: #b02e2b;
   }
 
   .vending-machine__info {

@@ -25,7 +25,9 @@ client import { getPurchasedCards } from "../lib/purchased-cards";
       <span class="app-header__search-label">Search</span>
     </if>
     <else>
-      <img src="../assets/venbay.svg" alt="venbay" class="app-header__logo">
+      <a href="/" class="app-header__logo-link">
+        <img src="../assets/venbay.svg" alt="venbay" class="app-header__logo">
+      </a>
     </else>
   </div>
 
@@ -106,7 +108,10 @@ client import { getPurchasedCards } from "../lib/purchased-cards";
     <else>
       <if=hasPurchasedCards>
         <a href="/my-cards" class="app-header__icon-btn" aria-label="My cards">
-          🎴
+          <svg class="app-header__cards-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="1.5" y="4.5" width="13" height="10" rx="2" transform="rotate(-8 1.5 4.5)" fill="currentColor" opacity="0.35"/>
+            <rect x="5.5" y="4.5" width="13" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
         </a>
       </if>
       <button
@@ -160,6 +165,11 @@ client import { getPurchasedCards } from "../lib/purchased-cards";
     flex: 2 0 0;
     display: flex;
     justify-content: center;
+  }
+
+  .app-header__logo-link {
+    display: inline-flex;
+    align-items: center;
   }
 
   .app-header__logo {
@@ -264,9 +274,11 @@ client import { getPurchasedCards } from "../lib/purchased-cards";
     height: 36px;
     border: none;
     background: transparent;
+    color: var(--text-color);
     border-radius: 50%;
     font-size: 1.125rem;
     cursor: pointer;
+    text-decoration: none;
   }
 
   .app-header__icon-btn:hover {
