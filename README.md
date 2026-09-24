@@ -1,22 +1,24 @@
-# Thanks for checking out Marko
+# venbay
 
-# Installation
+eBay's vending machine — buy digital trading cards sourced from the Unsplash API. Each card is styled like a trading card (unique name, image, type, stats), bought with credits earned over time. Built with [Marko](https://markojs.com) and [@marko/run](https://github.com/marko-js/run).
+
+See [documentation/INITIAL-PROMPT.MD](documentation/INITIAL-PROMPT.MD) for full project scope.
+
+## Getting started
 
 ```
-npm init marko -- --template basic
-cd marko-app
 npm install
 npm run dev
 ```
 
-## Overview
+App runs at `http://localhost:3000` by default.
 
-This project is powered by [@marko/run](https://github.com/marko-js/run).
+## Scripts
 
-- Run `npm run dev` to start the development server
-- Run `npm run build` to build a production-ready node.js server
-- Run `npm run preview` to run the production server
+- `npm run dev` — start the dev server
+- `npm run build` — build a production-ready Node.js server
+- `npm run preview` — run the production build locally
 
-## Adding Pages
+## Project structure
 
-Pages map to the directory structure. You can add additional pages by creating files/directories under `src/routes` with `+page.marko` files. Learn more in the [`@marko/run` docs](https://github.com/marko-js/run/#file-based-routing).
+Routes map to the file system under `src/routes` (`+page.marko` per route). See the [@marko/run docs](https://github.com/marko-js/run/#file-based-routing) for details.
