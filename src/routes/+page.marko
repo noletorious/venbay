@@ -1,9 +1,28 @@
 <main class="home">
-  <p>Card grid and vending machine coming soon.</p>
+  <div class="home__cards">
+    <await|cards|=$global.data.cards>
+      <card-grid cards=cards/>
+    </await>
+  </div>
+  <aside class="home__machine">
+    <p>Vending machine coming soon.</p>
+  </aside>
 </main>
 
 <style>
   .home {
+    display: flex;
+    gap: 1rem;
     padding: 1rem;
+  }
+
+  .home__cards {
+    flex: 3 0 0;
+    min-width: 0;
+  }
+
+  .home__machine {
+    flex: 1 0 0;
+    min-width: 220px;
   }
 </style>

@@ -2,26 +2,6 @@
 <let/theme="light">
 <let/query="">
 
-<script>
-  function toggleTheme() {
-    theme = theme === "light" ? "dark" : "light";
-    document.documentElement.dataset.theme = theme;
-  }
-
-  function openSearch() {
-    searching = true;
-  }
-
-  function closeSearch() {
-    searching = false;
-    query = "";
-  }
-
-  function handleInput(e) {
-    query = e.target.value;
-  }
-</script>
-
 <header class="app-header">
   <div class="app-header__left">
     <if=searching>
@@ -39,7 +19,9 @@
         class="app-header__search-input"
         placeholder="Search photo cards..."
         value=query
-        on-input=handleInput
+        onInput(e) {
+          query = e.target.value;
+        }
       >
     </if>
   </div>
@@ -50,7 +32,10 @@
         type="button"
         class="app-header__icon-btn"
         aria-label="Close search"
-        on-click=closeSearch
+        onClick() {
+          searching = false;
+          query = "";
+        }
       >
         ✕
       </button>
@@ -60,15 +45,20 @@
         type="button"
         class="app-header__icon-btn"
         aria-label="Toggle theme"
-        on-click=toggleTheme
+        onClick() {
+          theme = theme === "light" ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+        }
       >
         ◐
       </button>
       <button
         type="button"
-        class="app-header__icon-btn"
+        class="app-header__icon-btn app-header__icon-btn--search"
         aria-label="Open search"
-        on-click=openSearch
+        onClick() {
+          searching = true;
+        }
       >
         ⌕
       </button>
@@ -138,5 +128,11 @@
 
   .app-header__icon-btn:hover {
     background: var(--hover-bg, rgba(0, 0, 0, 0.06));
+  }
+
+  .app-header__icon-btn--search {
+    width: 1em;
+    height: 1em;
+    font-size: 2rem;
   }
 </style>

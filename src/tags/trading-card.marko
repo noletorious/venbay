@@ -1,0 +1,127 @@
+<const/name=input.card.alt_description || input.card.description || "Untitled"/>
+<const/photographer=input.card.user.name/>
+
+<div class="trading-card" style=`--card-accent:${input.card.color}`>
+  <div class="trading-card__frame">
+    <div class="trading-card__header">
+      <p class="trading-card__name">${name}</p>
+      <span class="trading-card__hp">♥ ${input.card.likes}</span>
+    </div>
+
+    <div class="trading-card__image-wrap">
+      <img src=input.card.urls.small alt=name class="trading-card__image">
+    </div>
+
+    <div class="trading-card__footer">
+      <span class="trading-card__type">Photo Card</span>
+      <span class="trading-card__dims">${input.card.width}×${input.card.height}</span>
+    </div>
+
+    <a
+      href=`${input.card.links.html}?utm_source=venbay&utm_medium=referral`
+      target="_blank"
+      rel="noopener"
+      class="trading-card__credit"
+    >
+      Photo by ${photographer} on Unsplash
+    </a>
+  </div>
+</div>
+
+<style>
+  .trading-card {
+    padding: 3px;
+    border-radius: 12px;
+    background: linear-gradient(160deg, var(--card-accent, #ccc), transparent 60%);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .trading-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .trading-card__frame {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: var(--bg-color);
+  }
+
+  .trading-card__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .trading-card__name {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .trading-card__hp {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--card-accent, currentColor);
+  }
+
+  .trading-card__image-wrap {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--card-accent, var(--border-color, #e5e5e5));
+  }
+
+  .trading-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .trading-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .trading-card__type {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.4rem;
+    border-radius: 999px;
+    background: var(--card-accent, var(--hover-bg));
+    color: #fff;
+  }
+
+  .trading-card__dims {
+    font-size: 0.6875rem;
+    opacity: 0.6;
+  }
+
+  .trading-card__credit {
+    font-size: 0.5625rem;
+    opacity: 0.5;
+    text-align: right;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .trading-card__credit:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+  }
+</style>
