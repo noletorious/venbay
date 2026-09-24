@@ -1,18 +1,33 @@
 <const/rowLetters=["A", "B", "C", "D", "E"]/>
+<const/rows=rowLetters.map((letter, ri) =>
+  input.cards.slice(ri * 5, ri * 5 + 5).map((card, ci) => ({ card, code: `${letter}${ci + 1}` }))
+)/>
 
 <div class="card-grid">
-  <for|card, i| of=input.cards>
-    <trading-card
-      card=card
-      code=`${rowLetters[Math.floor(i / 5)] || "?"}${(i % 5) + 1}`
-      onHover=input.onHover
-      onLeaveHover=input.onLeaveHover
-    />
+  <for|row| of=rows>
+    <div class="card-grid__row-wrap">
+      <div class="card-grid__row">
+        <for|item| of=row>
+          <trading-card
+            card=item.card
+            code=item.code
+            onHover=input.onHover
+            onLeaveHover=input.onLeaveHover
+          />
+        </for>
+      </div>
+    </div>
   </for>
 </div>
 
 <style>
   .card-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card-grid__row {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.75rem;
@@ -20,7 +35,41 @@
 
   @media (max-width: 700px) {
     .card-grid {
-      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      min-width: 0;
+      gap: 1.5rem;
+    }
+
+    .card-grid__row-wrap {
+      position: relative;
+      margin: -0.5rem -0.5rem -1.5rem 0;
+    }
+
+    .card-grid__row {
+      display: flex;
+      flex-wrap: nowrap;
+      width: 100%;
+      min-width: 0;
+      padding: 0.5rem 0.5rem 1.5rem 0.75rem;
+      box-sizing: border-box;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .card-grid__row > * {
+      flex: 0 0 42vw;
+      max-width: 200px;
+    }
+
+    .card-grid__row-wrap::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 32px;
+      background: linear-gradient(90deg, transparent, var(--bg-color));
+      pointer-events: none;
     }
   }
 </style>

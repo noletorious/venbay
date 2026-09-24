@@ -1,7 +1,15 @@
+client import { getCredits } from "../lib/credits";
+import { getCardCost } from "../lib/card-cost";
+
 <let/selectedRow=null>
 <let/selectedCol=null>
 <let/hoverRow=null>
 <let/hoverCol=null>
+<let/credits=25>
+
+<script>
+  credits = getCredits();
+</script>
 
 <const/rowLetters=["A", "B", "C", "D", "E"]/>
 
@@ -10,6 +18,7 @@
     <const/codeToId=Object.fromEntries(
       cards.map((c, i) => [`${rowLetters[Math.floor(i / 5)]}${(i % 5) + 1}`, c.id])
     )/>
+    <const/minCost=cards.length ? Math.min(...cards.map(getCardCost)) : 0/>
 
     <div class="home__cards">
       <card-grid
@@ -31,6 +40,8 @@
         col=selectedCol
         hoverRow=hoverRow
         hoverCol=hoverCol
+        credits=credits
+        minCost=minCost
         onSelectRow(r) {
           selectedRow = r;
           const code = `${r}${selectedCol}`;
@@ -72,5 +83,39 @@
     height: calc(100vh - var(--header-height, 64px) - 2rem);
     padding-bottom: 2rem;
     box-sizing: border-box;
+  }
+
+  @media (min-width: 701px) and (max-width: 900px) {
+    .home__machine {
+      flex-basis: 240px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .home {
+      flex-direction: column;
+    }
+
+    .home__cards {
+      flex: none;
+      width: 100%;
+      overflow-y: hidden;
+      padding-bottom: 320px;
+    }
+
+    .home__machine {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: auto;
+      max-height: 60vh;
+      padding: 0.75rem;
+      background: var(--bg-color);
+      border-top: 1px solid var(--border-color, #e5e5e5);
+      z-index: 50;
+    }
   }
 </style>

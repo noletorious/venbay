@@ -1,8 +1,11 @@
+import { getCardCost } from "../lib/card-cost";
+
 <const/name=input.card.alt_description || input.card.description || "Untitled"/>
 <const/photographer=input.card.user.name/>
+<const/cost=getCardCost(input.card)/>
 
 <div
-  class=`trading-card ${input.rare ? "trading-card--rare" : ""}`
+  class=`trading-card ${input.rare ? "trading-card--rare" : ""} ${input.detailed ? "trading-card--detailed" : ""}`
   style=`--card-accent:${input.card.color}`
   tabindex="0"
   aria-label=`${name}, code ${input.code}`
@@ -25,14 +28,18 @@
     </div>
 
     <div class="trading-card__image-wrap">
-      <img src=input.card.urls.small alt=name class="trading-card__image">
+      <img src=input.detailed ? input.card.urls.regular : input.card.urls.small alt=name class="trading-card__image">
       <span class="trading-card__code">${input.code}</span>
     </div>
 
     <div class="trading-card__footer">
       <span class="trading-card__type">Photo Card</span>
-      <span class="trading-card__dims">${input.card.width}×${input.card.height}</span>
+      <span class="trading-card__cost">$${cost}</span>
     </div>
+
+    <if=input.detailed>
+      <p class="trading-card__resolution">${input.card.width}×${input.card.height}</p>
+    </if>
 
     <div class="trading-card__meta-row">
       <span class="trading-card__hp">♥ ${input.card.likes}</span>
@@ -65,6 +72,45 @@
     outline-offset: 2px;
   }
 
+  .trading-card--detailed {
+    max-width: 420px;
+    perspective: 800px;
+  }
+
+  .trading-card--detailed:hover,
+  .trading-card--detailed:focus-visible {
+    animation: trading-card-spin 6s linear infinite;
+  }
+
+  @keyframes trading-card-spin {
+    0%,
+    100% {
+      transform: rotateY(6deg) rotateX(6deg);
+    }
+    25% {
+      transform: rotateY(-6deg) rotateX(-6deg);
+    }
+    50% {
+      transform: rotateY(-6deg) rotateX(6deg);
+    }
+    75% {
+      transform: rotateY(6deg) rotateX(-6deg);
+    }
+  }
+
+  .trading-card--detailed .trading-card__image-wrap {
+    aspect-ratio: 3 / 2;
+  }
+
+  .trading-card--detailed .trading-card__name {
+    font-size: 1.25rem;
+  }
+
+  .trading-card--detailed .trading-card__hp,
+  .trading-card--detailed .trading-card__cost {
+    font-size: 1rem;
+  }
+
   .trading-card__frame {
     display: flex;
     flex-direction: column;
@@ -79,9 +125,9 @@
     padding: 0.4rem 0.5rem;
     border-radius: 10px 10px 0 0;
     background: linear-gradient(
-      100deg,
-      color-mix(in srgb, var(--card-accent, #ccc) 45%, var(--bg-color)),
-      var(--bg-color) 85%
+      180deg,
+      color-mix(in srgb, var(--card-accent, #ccc) 45%, transparent),
+      transparent 85%
     );
   }
 
@@ -135,11 +181,22 @@
 
   .trading-card__footer {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .trading-card__cost {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
   }
 
   .trading-card__type {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 0.625rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -148,11 +205,6 @@
     border-radius: 999px;
     background: var(--card-accent, var(--hover-bg));
     color: #fff;
-  }
-
-  .trading-card__dims {
-    font-size: 0.6875rem;
-    opacity: 0.6;
   }
 
   .trading-card__meta-row {
@@ -184,5 +236,12 @@
   .trading-card__credit:hover {
     opacity: 0.85;
     text-decoration: underline;
+  }
+
+  .trading-card__resolution {
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.5;
+    text-align: right;
   }
 </style>

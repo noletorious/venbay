@@ -1,3 +1,5 @@
+client import { getPurchasedCards } from "../lib/purchased-cards";
+
 <const/suggestions=[
   "nature", "architecture", "animals", "ocean", "mountains",
   "city", "food", "technology", "space", "abstract", "travel", "minimal",
@@ -7,6 +9,11 @@
 <let/theme="light">
 <let/query=input.query || ""/>
 <let/showSuggestions=input.showSuggestions ?? false>
+<let/hasPurchasedCards=false>
+
+<script>
+  hasPurchasedCards = getPurchasedCards().length > 0;
+</script>
 
 <const/filteredSuggestions=suggestions
   .filter((s) => s.toLowerCase().includes(query.toLowerCase()))
@@ -97,6 +104,11 @@
       </button>
     </if>
     <else>
+      <if=hasPurchasedCards>
+        <a href="/my-cards" class="app-header__icon-btn" aria-label="My cards">
+          🎴
+        </a>
+      </if>
       <button
         type="button"
         class="app-header__icon-btn"

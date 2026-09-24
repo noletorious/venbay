@@ -8,4 +8,5 @@
 10:24p - 10:49p build out connection to unsplash, trading card styling
 10:49p - 11:29p vending machine keypad, search with suggestions, venbay logo
 11:29p - 12:08a card modal, button component, storybook setup (button/card/search stories)
-12:00p - 1:31p cleaning up 3 storybook components: card, header, modal; card-detail route + keypad-driven purchase flow; Unsplash caching/logging
+12:08a - 1:31p cleaning up 3 storybook components: card, header, modal; card-detail route + keypad-driven purchase flow; Unsplash caching/logging
+1:31p - 3:52p card cost/credits system with insufficient-funds gating, detail page redesign (reuse trading-card, notice banner, tilt animation), cosmetic pass across card/keypad states, mobile row-scroll grid + responsive fixes

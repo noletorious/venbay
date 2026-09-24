@@ -1,4 +1,4 @@
-<let/credits=25>
+<let/internalCredits=25>
 <let/internalRow=input.initialRow ?? null>
 <let/internalCol=input.initialCol ?? null>
 
@@ -7,28 +7,33 @@
 <const/row=input.row !== undefined ? input.row : internalRow/>
 <const/col=input.col !== undefined ? input.col : internalCol/>
 <const/selection=row && col ? `${row}${col}` : null/>
+<const/credits=input.credits !== undefined ? input.credits : internalCredits/>
+<const/insufficientCredits=input.minCost != null && credits < input.minCost/>
 
 <div class="vending-machine">
-  <div class="vending-machine__screen">
-    <if=selection>
-      <p class="vending-machine__screen-label">Selected</p>
-      <p class="vending-machine__screen-value">${selection}</p>
-    </if>
-    <else>
-      <p class="vending-machine__screen-label">Credits</p>
-      <p class="vending-machine__screen-value">${credits}</p>
-    </else>
-  </div>
+  <div class="vending-machine__info">
+    <div class="vending-machine__screen">
+      <if=selection>
+        <p class="vending-machine__screen-label">Selected</p>
+        <p class="vending-machine__screen-value">${selection}</p>
+      </if>
+      <else>
+        <p class="vending-machine__screen-label">Credits</p>
+        <p class="vending-machine__screen-value">${credits}</p>
+      </else>
+    </div>
 
-  <p class="vending-machine__hint">
-    Need more credits? They top up automatically over time.
-  </p>
+    <p class="vending-machine__hint">
+      Need more credits? They top up automatically over time.
+    </p>
+  </div>
 
   <div class="vending-machine__keypad">
     <for|r| of=rows>
       <button
         type="button"
         class=`vending-machine__key ${row === r ? "vending-machine__key--active" : input.hoverRow === r ? "vending-machine__key--hover-selected" : ""}`
+        disabled=insufficientCredits
         onClick() {
           if (input.onSelectRow) {
             input.onSelectRow(r);
@@ -44,6 +49,7 @@
       <button
         type="button"
         class=`vending-machine__key ${col === c ? "vending-machine__key--active" : input.hoverCol === c ? "vending-machine__key--hover-selected" : ""}`
+        disabled=insufficientCredits
         onClick() {
           if (input.onSelectCol) {
             input.onSelectCol(c);
@@ -60,13 +66,22 @@
       <venbay-button
         label="Dispense"
         icon="⏏"
-        disabled=!input.onDispense || !selection
+        disabled=!input.onDispense || !selection || insufficientCredits
         onClick() {
           input.onDispense?.(selection);
         }
       />
     </div>
   </div>
+
+  <a
+    href="https://www.ebay.com/certified-refurbished"
+    target="_blank"
+    rel="noopener"
+    class="vending-machine__ad-space"
+  >
+    <img src="../assets/ebay-ad.jpeg" alt="eBay Certified Refurbished">
+  </a>
 </div>
 
 <style>
@@ -109,6 +124,12 @@
     opacity: 0.7;
   }
 
+  .vending-machine__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
   .vending-machine__keypad {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -117,19 +138,21 @@
     border: 1px solid var(--border-color, #e5e5e5);
     border-radius: 8px;
     overflow: hidden;
-    flex: 1;
+    flex: 0 0 auto;
   }
 
   .vending-machine__key {
     aspect-ratio: 1;
+    padding: 0.75rem;
     border: none;
     background: var(--bg-color);
     color: var(--text-color);
     font-family: "Courier New", monospace;
     font-weight: 700;
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: filter 0.05s ease;
+    box-sizing: border-box;
   }
 
   .vending-machine__key:hover {
@@ -150,6 +173,15 @@
     color: var(--card-accent, #4c9aff);
   }
 
+  .vending-machine__key:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .vending-machine__key:disabled:hover {
+    filter: none;
+  }
+
   .vending-machine__dispense {
     grid-column: 1 / -1;
     background: var(--bg-color);
@@ -159,5 +191,44 @@
     width: 100%;
     border-radius: 0;
     box-shadow: none;
+  }
+
+  .vending-machine__ad-space {
+    display: block;
+    flex: 1;
+    min-height: 80px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .vending-machine__ad-space img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 700px) {
+    .vending-machine__ad-space {
+      display: none;
+    }
+
+    .vending-machine__key {
+      padding: 0.375rem;
+    }
+  }
+
+  @media (min-width: 500px) and (max-width: 700px) {
+    .vending-machine {
+      flex-direction: row;
+    }
+
+    .vending-machine__info {
+      flex: 1;
+    }
+
+    .vending-machine__keypad {
+      flex: 1;
+    }
   }
 </style>

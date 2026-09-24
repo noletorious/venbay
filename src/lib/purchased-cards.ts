@@ -13,3 +13,9 @@ export function addPurchasedCard(card: unknown, code: string) {
   purchased.push({ card, code });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(purchased));
 }
+
+export function removePurchasedCard(index: number) {
+  const purchased = getPurchasedCards();
+  purchased.splice(index, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(purchased));
+}
