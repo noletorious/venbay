@@ -4,3 +4,4 @@
 7:17p - 7:30p learn marko and patterns
 7:30p - 9:06p Setup project build and workflow with AI
 9:10p - 9:24p building out scaffold, `npm create marko`, gitignore, README
+9:24p - 9:43p build app-header (search, theme toggle), clean up home page

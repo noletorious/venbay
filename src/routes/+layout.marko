@@ -8,19 +8,35 @@
     <title>${$global.meta.pageTitle || "Marko"}</title>
   </head>
   <body>
+    <app-header/>
     <${input.content}/>
   </body>
 </html>
 
 <style>
+  :root,
+  :root[data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #15151e;
+    --border-color: #e5e5e5;
+    --hover-bg: rgba(0, 0, 0, 0.06);
+  }
+
+  :root[data-theme="dark"] {
+    --bg-color: #15151e;
+    --text-color: #f5f5f5;
+    --border-color: #33333f;
+    --hover-bg: rgba(255, 255, 255, 0.1);
+  }
+
   html,
   body {
     font-family: system-ui;
     padding: 0;
     margin: 0;
     height: 100%;
-    color: #fff;
-    background: #15151e;
+    color: var(--text-color);
+    background: var(--bg-color);
   }
   code {
     color: #fc0;

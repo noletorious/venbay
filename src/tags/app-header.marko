@@ -1,0 +1,142 @@
+<let/searching=false>
+<let/theme="light">
+<let/query="">
+
+<script>
+  function toggleTheme() {
+    theme = theme === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+  }
+
+  function openSearch() {
+    searching = true;
+  }
+
+  function closeSearch() {
+    searching = false;
+    query = "";
+  }
+
+  function handleInput(e) {
+    query = e.target.value;
+  }
+</script>
+
+<header class="app-header">
+  <div class="app-header__left">
+    <if=searching>
+      <span class="app-header__search-label">Search</span>
+    </if>
+    <else>
+      <img src="../assets/ebay-logo.webp" alt="eBay" class="app-header__logo">
+    </else>
+  </div>
+
+  <div class="app-header__center">
+    <if=searching>
+      <input
+        type="text"
+        class="app-header__search-input"
+        placeholder="Search photo cards..."
+        value=query
+        on-input=handleInput
+      >
+    </if>
+  </div>
+
+  <div class="app-header__right">
+    <if=searching>
+      <button
+        type="button"
+        class="app-header__icon-btn"
+        aria-label="Close search"
+        on-click=closeSearch
+      >
+        ✕
+      </button>
+    </if>
+    <else>
+      <button
+        type="button"
+        class="app-header__icon-btn"
+        aria-label="Toggle theme"
+        on-click=toggleTheme
+      >
+        ◐
+      </button>
+      <button
+        type="button"
+        class="app-header__icon-btn"
+        aria-label="Open search"
+        on-click=openSearch
+      >
+        ⌕
+      </button>
+    </else>
+  </div>
+</header>
+
+<style>
+  .app-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: var(--header-height, 64px);
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--border-color, #e5e5e5);
+  }
+
+  .app-header__left,
+  .app-header__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1 0 0;
+  }
+
+  .app-header__right {
+    justify-content: flex-end;
+  }
+
+  .app-header__center {
+    flex: 2 0 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .app-header__logo {
+    height: 24px;
+    width: auto;
+  }
+
+  .app-header__search-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .app-header__search-input {
+    width: 100%;
+    max-width: 480px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color, #e5e5e5);
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  .app-header__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    font-size: 1.125rem;
+    cursor: pointer;
+  }
+
+  .app-header__icon-btn:hover {
+    background: var(--hover-bg, rgba(0, 0, 0, 0.06));
+  }
+</style>
