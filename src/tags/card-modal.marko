@@ -1,0 +1,177 @@
+<const/name=input.card.alt_description || input.card.description || "Untitled"/>
+<const/photographer=input.card.user.name/>
+
+<div
+  class="card-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-label=`${name} details`
+  onClick(e) {
+    if (e.target === e.currentTarget) {
+      input.onClose?.();
+    }
+  }
+  onKeydown(e) {
+    if (e.key === "Escape") {
+      input.onClose?.();
+    }
+  }
+>
+  <div class="card-modal__panel">
+    <button
+      type="button"
+      class="card-modal__close"
+      aria-label="Close"
+      onClick() {
+        input.onClose?.();
+      }
+    >
+      ✕
+    </button>
+
+    <img src=input.card.urls.regular alt=name class="card-modal__image">
+
+    <div class="card-modal__body">
+      <div class="card-modal__header">
+        <p class="card-modal__name">${name}</p>
+        <span class="card-modal__hp">♥ ${input.card.likes}</span>
+      </div>
+
+      <div class="card-modal__meta">
+        <span class="card-modal__type">Photo Card</span>
+        <span class="card-modal__dims">${input.card.width}×${input.card.height}</span>
+      </div>
+
+      <p class="card-modal__prompt">
+        Want this card? Enter code
+        <strong class="card-modal__code">${input.code}</strong>
+        on the vending machine keypad and hit dispense.
+      </p>
+
+      <a
+        href=`${input.card.links.html}?utm_source=venbay&utm_medium=referral`
+        target="_blank"
+        rel="noopener"
+        class="card-modal__credit"
+      >
+        Photo by ${photographer} on Unsplash
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+  }
+
+  .card-modal__panel {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    border-radius: 12px;
+    background: var(--bg-color, #fff);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-modal__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .card-modal__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .card-modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .card-modal__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .card-modal__name {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .card-modal__hp {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--card-accent, currentColor);
+  }
+
+  .card-modal__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-modal__type {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--hover-bg);
+  }
+
+  .card-modal__dims {
+    font-size: 0.8125rem;
+    opacity: 0.6;
+  }
+
+  .card-modal__prompt {
+    margin: 0.25rem 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  .card-modal__code {
+    font-family: "Courier New", monospace;
+    font-size: 1.0625rem;
+    letter-spacing: 0.05em;
+  }
+
+  .card-modal__credit {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    color: inherit;
+  }
+
+  .card-modal__credit:hover {
+    opacity: 0.9;
+  }
+</style>

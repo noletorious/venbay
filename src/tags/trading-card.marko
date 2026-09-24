@@ -1,11 +1,25 @@
 <const/name=input.card.alt_description || input.card.description || "Untitled"/>
 <const/photographer=input.card.user.name/>
 
-<div class="trading-card" style=`--card-accent:${input.card.color}`>
+<div
+  class=`trading-card ${input.rare ? "trading-card--rare" : ""}`
+  style=`--card-accent:${input.card.color}`
+  role="button"
+  tabindex="0"
+  aria-label=`View ${name}, code ${input.code}`
+  onClick() {
+    input.onSelect?.(input.card, input.code);
+  }
+  onKeydown(e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      input.onSelect?.(input.card, input.code);
+    }
+  }
+>
   <div class="trading-card__frame">
     <div class="trading-card__header">
       <p class="trading-card__name">${name}</p>
-      <span class="trading-card__hp">♥ ${input.card.likes}</span>
     </div>
 
     <div class="trading-card__image-wrap">
@@ -18,19 +32,26 @@
       <span class="trading-card__dims">${input.card.width}×${input.card.height}</span>
     </div>
 
-    <a
-      href=`${input.card.links.html}?utm_source=venbay&utm_medium=referral`
-      target="_blank"
-      rel="noopener"
-      class="trading-card__credit"
-    >
-      Photo by ${photographer} on Unsplash
-    </a>
+    <div class="trading-card__meta-row">
+      <span class="trading-card__hp">♥ ${input.card.likes}</span>
+      <a
+        href=`${input.card.links.html}?utm_source=venbay&utm_medium=referral`
+        target="_blank"
+        rel="noopener"
+        class="trading-card__credit"
+        onClick(e) {
+          e.stopPropagation();
+        }
+      >
+        Photo by ${photographer} on Unsplash
+      </a>
+    </div>
   </div>
 </div>
 
 <style>
   .trading-card {
+    max-width: 260px;
     padding: 3px;
     border-radius: 12px;
     background: linear-gradient(160deg, var(--card-accent, #ccc), transparent 60%);
@@ -43,6 +64,11 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   }
 
+  .trading-card:focus-visible {
+    outline: 2px solid var(--card-accent, #4c9aff);
+    outline-offset: 2px;
+  }
+
   .trading-card__frame {
     display: flex;
     flex-direction: column;
@@ -53,14 +79,19 @@
   }
 
   .trading-card__header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
+    margin: -0.5rem -0.5rem 0;
+    padding: 0.4rem 0.5rem;
+    border-radius: 10px 10px 0 0;
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--card-accent, #ccc) 45%, var(--bg-color)),
+      var(--bg-color) 85%
+    );
   }
 
   .trading-card__name {
     margin: 0;
+    color: var(--card-title-color, var(--text-color));
     font-size: 0.8125rem;
     font-weight: 700;
     white-space: nowrap;
@@ -68,11 +99,12 @@
     text-overflow: ellipsis;
   }
 
-  .trading-card__hp {
-    flex-shrink: 0;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    color: var(--card-accent, currentColor);
+  .trading-card--rare .trading-card__header {
+    background: var(--card-accent, #ccc);
+  }
+
+  .trading-card--rare .trading-card__name {
+    --card-title-color: #fff;
   }
 
   .trading-card__image-wrap {
@@ -81,6 +113,7 @@
     overflow: hidden;
     border-radius: 6px;
     border: 1px solid var(--card-accent, var(--border-color, #e5e5e5));
+    background: var(--hover-bg);
   }
 
   .trading-card__code {
@@ -126,7 +159,22 @@
     opacity: 0.6;
   }
 
+  .trading-card__meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .trading-card__hp {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--card-accent, currentColor);
+  }
+
   .trading-card__credit {
+    min-width: 0;
     font-size: 0.5625rem;
     opacity: 0.5;
     text-align: right;

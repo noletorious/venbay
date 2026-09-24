@@ -3,10 +3,10 @@
   "city", "food", "technology", "space", "abstract", "travel", "minimal",
 ]/>
 
-<let/searching=false>
+<let/searching=input.searching ?? false>
 <let/theme="light">
 <let/query=input.query || ""/>
-<let/showSuggestions=false>
+<let/showSuggestions=input.showSuggestions ?? false>
 
 <const/filteredSuggestions=suggestions
   .filter((s) => s.toLowerCase().includes(query.toLowerCase()))

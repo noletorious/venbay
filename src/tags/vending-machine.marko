@@ -47,14 +47,14 @@
     </for>
   </div>
 
-  <button
-    type="button"
-    class="vending-machine__dispense"
+  <venbay-button
+    label="Dispense"
+    icon="⏏"
     disabled=!selection
-    aria-label="Dispense"
-  >
-    ⏏ Dispense
-  </button>
+    onClick() {
+      // purchase flow wired up later
+    }
+  />
 </div>
 
 <style>
@@ -131,29 +131,5 @@
   .vending-machine__key--active {
     background: var(--card-accent, #4c9aff);
     color: #fff;
-  }
-
-  .vending-machine__dispense {
-    padding: 0.75rem;
-    border: none;
-    border-radius: 6px;
-    background: var(--text-color);
-    color: var(--bg-color);
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
-    transition: transform 0.05s ease, box-shadow 0.05s ease;
-  }
-
-  .vending-machine__dispense:active:not(:disabled) {
-    transform: translateY(3px);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-  }
-
-  .vending-machine__dispense:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    box-shadow: none;
   }
 </style>

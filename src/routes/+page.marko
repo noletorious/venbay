@@ -1,13 +1,30 @@
+<let/selected=null>
+
 <main class="home">
   <div class="home__cards">
     <await|cards|=$global.data.cards>
-      <card-grid cards=cards/>
+      <card-grid
+        cards=cards
+        onSelect(card, code) {
+          selected = { card, code };
+        }
+      />
     </await>
   </div>
   <aside class="home__machine">
     <vending-machine/>
   </aside>
 </main>
+
+<if=selected>
+  <card-modal
+    card=selected.card
+    code=selected.code
+    onClose() {
+      selected = null;
+    }
+  />
+</if>
 
 <style>
   .home {

@@ -1,0 +1,67 @@
+<const/variant=input.variant || "primary"/>
+
+<button
+  type="button"
+  class=`venbay-button venbay-button--${variant}`
+  disabled=input.disabled
+  aria-label=input.ariaLabel || input.label
+  onClick() {
+    input.onClick?.();
+  }
+>
+  <if=input.icon>
+    <span class="venbay-button__icon">${input.icon}</span>
+  </if>
+  <if=input.label>
+    <span class="venbay-button__label">${input.label}</span>
+  </if>
+</button>
+
+<style>
+  .venbay-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  .venbay-button--primary {
+    background: var(--text-color);
+    color: var(--bg-color);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .venbay-button--primary:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .venbay-button--secondary {
+    background: transparent;
+    border: 1px solid var(--border-color, #e5e5e5);
+    color: var(--text-color);
+  }
+
+  .venbay-button--secondary:hover:not(:disabled) {
+    background: var(--hover-bg);
+  }
+
+  .venbay-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .venbay-button__icon {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+</style>

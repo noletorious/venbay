@@ -9,13 +9,18 @@
   },
   "devDependencies": {
     "@marko/run": "^0.11.12",
-    "@types/node": "^22.10.5"
+    "@storybook/marko": "^10.1.0",
+    "@storybook/marko-vite": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "storybook": "^10.6.0"
   },
   "private": true,
   "scripts": {
     "dev": "marko-run",
     "build": "marko-run build",
     "preview": "marko-run preview",
-    "start": "node --enable-source-maps ./dist/index.mjs"
+    "start": "node --enable-source-maps ./dist/index.mjs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   }
 }

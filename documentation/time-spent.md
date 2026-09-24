@@ -7,3 +7,5 @@
 9:24p - 9:43p build app-header (search, theme toggle), clean up home page
 10:24p - 10:49p build out connection to unsplash, trading card styling
 10:49p - 11:29p vending machine keypad, search with suggestions, venbay logo
+11:29p - 12:08a card modal, button component, storybook setup (button/card/search stories)
+12:00p - X:XX cleaning up 3 storybook components: card, header, modal
