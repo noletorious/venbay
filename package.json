@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "description": "The default Marko starter app with TypeScript",
+  "name": "venbay",
+  "description": "ebays vending machine",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
