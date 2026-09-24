@@ -1,0 +1,18 @@
+# secrets
+keys/
+.env
+.env.local
+.env.*.local
+
+# deps / build
+node_modules/
+dist/
+.marko-run/
+storybook-static/
+
+# test / coverage
+coverage/
+
+# editor / os
+.vscode/
+.DS_Store
