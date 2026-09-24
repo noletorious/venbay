@@ -52,7 +52,7 @@ client import { addCredits } from "../lib/credits";
       <button
         type="button"
         class=`vending-machine__key ${row === r ? "vending-machine__key--active" : input.hoverRow === r ? "vending-machine__key--hover-selected" : ""}`
-        disabled=insufficientCredits
+        disabled=insufficientCredits || input.locked
         onClick() {
           if (input.onSelectRow) {
             input.onSelectRow(r);
@@ -68,7 +68,7 @@ client import { addCredits } from "../lib/credits";
       <button
         type="button"
         class=`vending-machine__key ${col === c ? "vending-machine__key--active" : input.hoverCol === c ? "vending-machine__key--hover-selected" : ""}`
-        disabled=insufficientCredits
+        disabled=insufficientCredits || input.locked
         onClick() {
           if (input.onSelectCol) {
             input.onSelectCol(c);
@@ -223,6 +223,11 @@ client import { addCredits } from "../lib/credits";
 
   .vending-machine__key:disabled:hover {
     filter: none;
+  }
+
+  .vending-machine__key--active:disabled {
+    opacity: 1;
+    cursor: default;
   }
 
   .vending-machine__dispense {

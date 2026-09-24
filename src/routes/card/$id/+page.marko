@@ -34,6 +34,7 @@ import { getCardCost } from "../../../lib/card-cost";
     <vending-machine
       initialRow=code ? code[0] : null
       initialCol=code ? Number(code.slice(1)) : null
+      locked=!!code
       credits=credits
       minCost=cost
       onCreditsChange(next) { credits = next; }
