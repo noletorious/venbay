@@ -1,19 +1,29 @@
 # venbay
 
-eBay's vending machine — buy digital trading cards sourced from the Unsplash API. Each card is styled like a trading card (unique name, image, type, stats), bought with credits earned over time. Built with [Marko](https://markojs.com) and [@marko/run](https://github.com/marko-js/run).
+eBay's vending machine — buy digital trading cards sourced from the Unsplash API. Each card is styled like a trading card (unique name, image, type, stats), bought with credits earned over time. The concept extends to other things, like digital assets, ebay products, NFTs, etc.
 
-The concept is that cards can be other things, like digital assets, ebay products, NFTs, etc.
+## For Reviewers
 
-See [documentation/INITIAL-PROMPT.MD](documentation/INITIAL-PROMPT.MD) for full project scope.
+A quick explainer of scope and my deep dive in my dev/design thoughts, a good place to start is here: **[documentation/noel-share/APPROACH.md](documentation/noel-share/APPROACH.md)**.
 
-## Getting started
+Phase I (MVP) deployment: link coming soon.
+Phase II deployment: link coming soon.
+
+## Getting started locally
+
+Card data comes from the Unsplash API, so you'll need your own (free) access key:
+
+1. Create an app at [unsplash.com/oauth/applications](https://unsplash.com/oauth/applications) to get an Access Key.
+2. Add it to a `.env.local` file in the project root: `UNSPLASH_ACCESS_KEY=your-key-here`.
+
+Also, I can provided one if requested.
 
 ```
 npm install
 npm run dev
 ```
 
-App runs at `http://localhost:3000` by default.
+App runs at `http://localhost:3000` by default. Without a key, the card grid/detail routes will come back empty (check the terminal for the logged response status).
 
 ## Scripts
 
