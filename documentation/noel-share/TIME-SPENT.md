@@ -12,3 +12,4 @@
 1:31p - 3:52p card cost/credits system with insufficient-funds gating, detail page redesign (reuse trading-card, notice banner, tilt animation), cosmetic pass across card/keypad states, mobile row-scroll grid + responsive fixes
 4:14p - 5:35p addressing insufficient funds and adding credits, cleaning up my-cards view and UX when view/deleting, developing tests and refining storybook, clean up navbar, sparkle effect on dial keys, cleanup pass
 5:00p - 8:30p finalize MVP by updating documentation and describing thought process, setup deployments on Railway
+9:35 - XX:XX Further organize README and APPROACH, start Phase II.

@@ -1,6 +1,6 @@
 # General approach notes
 
-The goal was to simulate a vending machine experience. At it's core, the interaction people make is the decision and action between the left and right column. Check out the [vending-machine inspiration](documentation/noel-share/vending-machines/) I pulled together.
+The goal was to simulate a vending machine experience. At it's core, the interaction people make is the decision and action between the left and right column. Check out the vending-machine inspiration I pulled together: [express-combo.png](vending-machines/express-combo.png), [gettyimages-182720115.jpg](vending-machines/gettyimages-182720115.jpg), [woman-pushing-buttons.webp](vending-machines/woman-pushing-buttons.webp).
 
 Early on, I found myself having to undo what was intuitive, like a dropshadow on hover on a card in the list. At first I had a click to open a modal, showing the card in someway. But I found that to be not so compelling and the concept of a card becames more blurry. Creating the card, like a card, warranted a dynamic card route. Which began the flow I committed to. I documented hour by hour in [time spent](documentation/noel-share/TIME-SPENT.md).
 
@@ -42,17 +42,17 @@ Working on mobile, I found that I needed to finesse responsiveness at certain vi
 
 ### Cards and the dial keypad
 
-I reinforced the connection that hover over an item is not what the user ultimately wants to do to select a card. I added more fun visual affordance with a stroke/sparkles, simplified the interaction when hover-selecting via card and regular hover on the keypad when in different states.
+I reinforced the connection that when hovering over an item is not what the user ultimately wants to do in order to select a card. I added more fun visual affordance with a stroke/sparkles, simplified the interaction when hover-selecting via card and regular hover on the keypad when in different states.
 
 Once a card's detail page loads with a code already dialed in, the row/col keys lock — they're display-only at that point, and dispense is immediately ready, since re-dialing on that screen wouldn't do anything useful. I also ported over a sparkle effect (originally a React/framer-motion component of mine) onto the active/hovered keypad letters and numbers, as a small reward for landing on a selection.
 
 ### Credits, insufficient funds, and topping up
 
-Once credit-gating existed, "what happens when you're out" needed a real answer beyond disabling the dials. Added a top-up modal (fake card entry + a fake Apple Pay flow with a QR code — no real payment processing, this is a prototype) that lets a user add credits up to a 100 cap. The hint text under the credit display switches between a neutral "Need more credits?" link and a more urgent "You need more credits" when the current selection can't be afforded.
+Once credit-gating existed such as a insufficient funds scenario, I added a top-up modal (fake card entry + a fake Apple Pay flow with a QR code — no real payment processing, this is a prototype) that lets a user add credits up to a 100 cap. The hint text under the credit display switches between a neutral "Need more credits?" link and a more urgent "You need more credits" when the user doesn't have enough to cover any card amount.
 
 ### My Cards — showcase & throw away
 
-`/my-cards` originally had a plain discard button per card. Replaced it with a ⋮ menu (matching the card's own visual language rather than sitting outside it) offering two actions: throw away, which now confirms via a modal instead of deleting instantly, and showcase, a new `/my-cards/{index}` route that displays the card centered with an angled tilt/shadow for a bit of presentation.
+`/my-cards` originally had a plain discard button per card. Replaced it with a ⋮ menu (matching the card's own visual language rather than sitting outside it) offering two actions: throw away, which now confirms via a modal instead of deleting instantly, and showcase, a new `/my-cards/{index}` route that displays the card centered with an angled tilt/shadow for a bit of presentation. The user needed something to do with the card after purchasing.
 
 ### The click-modal → keypad-driven purchase flow pivot
 
@@ -81,14 +81,13 @@ Getting `theme.css` into the live app took two failed attempts before landing:
 
 - A `<link>` to it in the layout's `<head>` broke on nested routes (`/card/:id`) — the relative path resolves against the browser's current URL, not the source file, so it 404'd.
 - Moving it into a `<script>` import broke immediately — `import` is only valid at a `.marko` file's root, not inside its compiled `<script>` block.
-- Landed on duplicating the variables directly in the layout's own scoped `<style>` block for the live app, and keeping `theme.css` only for Storybook's `preview.ts` (a real module context where `import` works as expected).
+- Landed on duplicating the variables directly in the layout's own scoped `<style>` block for the live app, and keeping `theme.css` only for Storybook's `preview.ts` (a real module context where `import` works as expected). Not great, would love to learn how write once.
 
 Everything themed also has to explicitly set `color`/`background` from those tokens — buttons and links don't inherit `body`'s color by default, so a few icon buttons silently ignored the theme until that got fixed.
 
-For Storybook's own light/dark toolbar control: `@storybook/marko`'s decorator plumbing is renderer-specific and its exact story-wrapping signature wasn't worth reverse-engineering. Used `globalTypes` (toolbar item) + a `loaders` hook in `preview.ts` that just sets `document.documentElement.dataset.theme = globals.theme` before each story renders — loaders are a plain pre-render side-effect hook supported identically across every Storybook renderer, so it sidesteps Marko-specific decorator composition entirely.
+### Per Claude on Storybook
 
-### Storybook setup
-
+- For Storybook's own light/dark toolbar control: `@storybook/marko`'s decorator plumbing is renderer-specific and its exact story-wrapping signature wasn't worth reverse-engineering. Used `globalTypes` (toolbar item) + a `loaders` hook in `preview.ts` that just sets `document.documentElement.dataset.theme = globals.theme` before each story renders — loaders are a plain pre-render side-effect hook supported identically across every Storybook renderer, so it sidesteps Marko-specific decorator composition entirely.
 - The package README's documented setup command (`npx sb init --type marko --builder webpack5`) no longer works — current Storybook CLI dropped "marko" from its built-in `--type` list.
 - Found `@storybook/marko-vite` by digging into the package's own test fixtures (not its README, which only documents webpack5), and set it up manually so Storybook shares the app's Vite toolchain instead of introducing a separate webpack build alongside it.
 
@@ -103,5 +102,6 @@ For Storybook's own light/dark toolbar control: `@storybook/marko`'s decorator p
 
 ## Won't do
 
-- Fixing accessibility issue, most of them being color contrast
-- Build a robust checkout system
+- [x] Fixing accessibility issue, most of them being color contrast
+- [x] Build a robust checkout system
+- [x] Sophisticated styling
