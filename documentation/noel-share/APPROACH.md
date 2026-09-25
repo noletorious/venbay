@@ -1,8 +1,14 @@
 # General approach notes
 
-The goal was to simulate a vending machine experience. At it's core, the interaction people make is the decision and action between the left and right column. Check out the vending-machine inspiration I pulled together: [express-combo.png](vending-machines/express-combo.png), [gettyimages-182720115.jpg](vending-machines/gettyimages-182720115.jpg), [woman-pushing-buttons.webp](vending-machines/woman-pushing-buttons.webp).
+The goal was to simulate a vending machine experience. At its core, the interaction people make is the decision and action between the left and right column. Check out the vending-machine inspiration I pulled together: [express-combo.png](vending-machines/express-combo.png), [gettyimages-182720115.jpg](vending-machines/gettyimages-182720115.jpg), [woman-pushing-buttons.webp](vending-machines/woman-pushing-buttons.webp).
 
-Early on, I found myself having to undo what was intuitive, like a dropshadow on hover on a card in the list. At first I had a click to open a modal, showing the card in someway. But I found that to be not so compelling and the concept of a card becames more blurry. Creating the card, like a card, warranted a dynamic card route. Which began the flow I committed to. I documented hour by hour in [time spent](documentation/noel-share/TIME-SPENT.md).
+## Designing then developing
+
+Early on, I found myself having to undo what was intuitive, like a dropshadow on hover on a card in the list. I thought to myself that this feels nothing like a vending machine. At first I had a click on the card to open a modal, to showing the card in someway. But I found that to be not so compelling and so ideas morphed, scope slightly changed. For instance I found the concept of a card became more blurry if I designed selecting a card like a normal web UI. Creating the card, like a card, warranted a dynamic card route. Which began the flow I committed to.
+
+Developing, I found myself relying on AI heavily on building the app as I never used Markojs before! Which I enjoyed, coming from React. Admittedly, I did my best to work pragmatically, reviewing most but not all the code that was generated. I used Claude Sonnet 5. I left a list of things that were at top of my that I'd get to if I had more time which includes more code review.
+
+As an extra, I documented hour by hour in [time spent](TIME-SPENT.md).
 
 ## Phase I vs II
 
@@ -27,12 +33,12 @@ Phase I covers the functional requirements outlined in the take home document, t
 - [x] 11. Credits top-up — modal with a fake card/Apple Pay flow, caps at 100
 - [x] 12. Make a pass at code clean-up, optimization, review.
 
-Here is the final flow, [dial-and-dispense loop](https://claude.ai/artifact/7ufTLdjJxzymgHoigyLsbZ).
+Here is the final flow brought to you by Claude, [dial-and-dispense loop](https://claude.ai/artifact/7ufTLdjJxzymgHoigyLsbZ).
 
 ### Stack choices
 
 - Marko + `@marko/run` (file-based routing) + `@marko/vite`, per the take-home test's requirement to use eBay's own framework.
-- `npm create marko` was scaffolded manually (the blog-post-era `marko-run` create command is dead; current command is `npm create marko`).
+- `npm create marko` was scaffolded manually (the blog-post-era `marko-run` create command is outdated; current command is `npm create marko`).
 - Plain CSS + CSS variables throughout, no preprocessor yet. No CSS/UI libraries anywhere (needs to satisfy the take-home spec's explicit requirement).
 - Unsplash integration, needed to follow API rules
 
@@ -68,8 +74,8 @@ This was the biggest direction change in the session, worth flagging explicitly:
 
 <img src="problem-dynamic-or-stored.png" width="600" />
 
-- Moving away from the modal, I considered keeping the row/col code itself as the URL (`/card/A3`) taking the Recommeded route, but the 25-card set is re-fetched fresh (random or search) on each request, so a given code doesn't reliably point at the same photo across loads.
-- Decided to route by the underlying Unsplash photo ID instead (`/card/{id}`), with the code carried along only as a display label via a query param. Persisting the whole 25-card set was raised as an alternative and deliberately skipped for this prototype — Unsplash stays the source of truth, re-fetched fresh each load.
+- Moving away from the modal, I considered keeping the row/col code itself as the URL (`/card/A3`) taking the recommended route, but the 25-card set is re-fetched fresh (random or search) on each request, so a given code doesn't reliably point at the same photo across loads.
+- Decided to route by the underlying Unsplash photo ID instead (`/card/{id}`), with the code carried along only as a display label via a query param. Allowed to prototype consistent cards, throughout states.
 
 ### Persistence
 
@@ -122,14 +128,18 @@ Considered eBay's own `evo-3d-viewer` (wraps Google's `<model-viewer>`, alpha co
 
 I didn't want to overhaul a ton of code but wanted to demonstrate my considerations of pulling in the ebay coreui. Implemented proof of concept code:
 
-- Working, uses skin varialbes: `.vending-machine` border-radius now uses `var(--border-radius-50)`.
+- Working, uses skin variables: `.vending-machine` border-radius now uses `var(--border-radius-50)`.
 - Mismatch example: I implemented `data-theme="dark"` as a simple approach, but skin tokens key off of more sophisticated theme.
 - I just incorporated the skin CSS, not the actual ebay marko components, which would greatly help with accessibility.
 
-## Wish I could if more time
+## Wish I could, if more time
 
 - [ ] Loading states
+- [ ] Further review on code quality
+- [ ] Weave in more of ebay's coreui, improving accessibility
 - [ ] Cohesive styling between vending machine and app UI
+- [ ] Exhaustive testing, leverage storybook/testing tools for higher confidence
+- [ ] Figma mocks, allow further design now that the idea is more flushed out
 
 ## Won't do
 

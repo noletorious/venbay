@@ -14,3 +14,6 @@
 5:00p - 8:30p finalize MVP by updating documentation and describing thought process, setup deployments on Railway
 9:35 - 10:30p Further organize README and APPROACH, start Phase II. Start with building 3D scene.
 11:00 - 12:05a add in 3D object, add transition into UI handled by localStorge. Clean up documentation.
+7:20a - 7:55a Add final touches to documentation. Make pass at code clean up and glaring bugs.
+
+Thank you ebay team! Looking forward to joining the team.
