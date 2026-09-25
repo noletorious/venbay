@@ -239,10 +239,46 @@ export interface Input {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background: var(--bg-color);
+    background: linear-gradient(180deg, #f0f0f3, #e2e2e6);
     --intro-fade: 0;
     opacity: calc(1 - var(--intro-fade));
     transition: opacity 0.5s ease;
+  }
+
+  .machine-intro::before,
+  .machine-intro::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .machine-intro::before {
+    top: 0;
+    bottom: 50%;
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(0, 0, 0, 0.06) 0,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 9px
+    );
+    background-attachment: fixed;
+  }
+
+  .machine-intro::after {
+    top: 50%;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.06) 0,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 9px
+    );
+    background-attachment: fixed;
   }
 
   .machine-intro--entering {

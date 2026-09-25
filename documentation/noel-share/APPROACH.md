@@ -109,7 +109,7 @@ Everything themed also has to explicitly set `color`/`background` from those tok
 
 ## Incorporating 3D
 
-Created the object using krea.ai, exported as `.glb`. Used https://optimizeglb.com/dashboard to compress from 51mb to 1.6mb.
+First, if you want to see the 3D scene again easily, while on the home page, click the top left logo. I created the object using krea.ai, exported as `.glb`. Used https://optimizeglb.com/dashboard to compress from 51mb to 1.6mb.
 
 Rendering is hand-rolled `three` (`GLTFLoader`, no scene-management library) inside a single Marko tag (`machine-intro.marko`) driven by a `<lifecycle>` block — Marko owns mount/unmount, three.js owns the render loop in between.
 
@@ -136,6 +136,7 @@ I didn't want to overhaul a ton of code but wanted to demonstrate my considerati
 
 - [ ] Loading states
 - [ ] Further review on code quality
+- [ ] Setup CI checks for running tests during deployment
 - [ ] Weave in more of ebay's coreui, improving accessibility
 - [ ] Cohesive styling between vending machine and app UI
 - [ ] Exhaustive testing, leverage storybook/testing tools for higher confidence
