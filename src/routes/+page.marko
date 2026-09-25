@@ -6,10 +6,26 @@ import { getCardCost } from "../lib/card-cost";
 <let/hoverRow=null>
 <let/hoverCol=null>
 <let/credits=25>
+<let/showIntro=false>
 
 <script>
   credits = getCredits();
 </script>
+
+<lifecycle
+  onMount() {
+    if (!localStorage.getItem("venbay-intro-seen")) {
+      showIntro = true;
+      localStorage.setItem("venbay-intro-seen", "1");
+    }
+    const replay = () => { showIntro = true; };
+    window.addEventListener("venbay:replay-intro", replay);
+    return { cleanup: () => window.removeEventListener("venbay:replay-intro", replay) };
+  }
+  onDestroy() {
+    this?.cleanup();
+  }
+/>
 
 <const/rowLetters=["A", "B", "C", "D", "E"]/>
 
@@ -62,6 +78,10 @@ import { getCardCost } from "../lib/card-cost";
       />
     </aside>
   </await>
+
+  <if=showIntro>
+    <machine-intro onEnter() { showIntro = false; }/>
+  </if>
 </main>
 
 <style>

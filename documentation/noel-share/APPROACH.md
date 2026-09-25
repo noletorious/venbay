@@ -95,10 +95,34 @@ Everything themed also has to explicitly set `color`/`background` from those tok
 
 ### Checklist
 
-- [ ] Incorporate parts of eBay's evo-web component library
-- [ ] 3D vending machine initial state that zooms into the app interface on interaction
-- [ ] Theres was anothers thing. I'll come back when I remeber.
+- [x] Incorporate parts of eBay's evo-web component library
+- [x] 3D vending machine initial state that zooms into the app interface on interaction
 - [ ] Make a accessibility audit, address issues.
+
+## Incorporating 3D
+
+Created the object using krea.ai, exported as `.glb`.
+
+Rendering is hand-rolled `three` (`GLTFLoader`, no scene-management library) inside a single Marko tag (`machine-intro.marko`) driven by a `<lifecycle>` block — Marko owns mount/unmount, three.js owns the render loop in between.
+
+Sequence, as a state machine on one `azimuth` value orbiting a fixed target:
+
+- On mount: model loads, gets re-centered/scaled from its bounding box, drops onto a shadow-catching ground plane (`ShadowMaterial` + shadow-mapped directional light) so it doesn't look like it's floating.
+- Idle: eases from a starting "profile" angle to a mirrored opposite-profile angle (ease-out-cubic tween on `azimuth`), rather than using `OrbitControls`' `autoRotate` — that hit a hard angle clamp and stopped abruptly, so I dropped `OrbitControls` and hand-rolled the orbit math (spherical coordinates around a fixed look-at target) to get an eased settle instead.
+- Drag: plain pointer events rotate `azimuth` directly; release always eases back to the resting end-profile, not wherever the user left it.
+- Wheel: small clamped zoom, independent of rotation.
+- "Enter venbay" click: captures the camera's *live* position (whatever profile/drag state it's in) and eases it toward a close front-on framing, cross-fading the whole overlay's opacity out as it settles, then unmounts and hands off to the real homepage underneath.
+- Renderer is alpha-transparent (no `scene.background`) so the venbay/eBay logo lockup — plain HTML/CSS behind the canvas — is visible through empty canvas space and gets naturally occluded by the model where they overlap, instead of drawing them as a texture in the 3D scene.
+
+Considered eBay's own `evo-3d-viewer` (wraps Google's `<model-viewer>`, alpha component in `@evo-web/marko`) instead of hand-rolling — passed on it because it's a black-box element with only high-level attributes (`camera-orbit`, etc), not a scene graph you can script against, so it couldn't do the profile-tween/drag-spring-back/transparent-compositing choreography above.
+
+## Using @ebay/skin
+
+I didn't want to overhaul a ton of code but wanted to demonstrate my considerations of pulling in the ebay coreui. Implemented proof of concept code:
+
+- Working, uses skin varialbes: `.vending-machine` border-radius now uses `var(--border-radius-50)`.
+- Mismatch example: I implemented `data-theme="dark"` as a simple approach, but skin tokens key off of more sophisticated theme.
+- I just incorporated the skin CSS, not the actual ebay marko components, which would greatly help with accessibility.
 
 ## Won't do
 

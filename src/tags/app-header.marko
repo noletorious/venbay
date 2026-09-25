@@ -25,7 +25,16 @@ client import { getPurchasedCards } from "../lib/purchased-cards";
       <span class="app-header__search-label">Search</span>
     </if>
     <else>
-      <a href="/" class="app-header__logo-link">
+      <a
+        href="/"
+        class="app-header__logo-link"
+        onClick(e) {
+          if (window.location.pathname === "/") {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent("venbay:replay-intro"));
+          }
+        }
+      >
         <img src="../assets/venbay.svg" alt="venbay" class="app-header__logo">
       </a>
     </else>
