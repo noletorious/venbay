@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@marko/run": "^0.11.12",
-    "@marko/run-adapter-node": "^2.0.6",
     "@playwright/test": "^1.49.0",
     "@storybook/addon-a11y": "^10.1.0",
     "@storybook/marko": "^10.1.0",
