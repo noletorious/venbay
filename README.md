@@ -6,8 +6,8 @@ eBay's vending machine — buy digital trading cards sourced from the Unsplash A
 
 A quick explainer of scope and my deep dive in my dev/design thoughts, a good place to start is here: **[documentation/noel-share/APPROACH.md](documentation/noel-share/APPROACH.md)**.
 
-Phase I (MVP) deployment: link coming soon.
-Phase II deployment: link coming soon.
+- Phase I (MVP) deployment: https://venbay-production.up.railway.app/
+- Phase II deployment: link coming soon.
 
 ## Getting started locally
 
