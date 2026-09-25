@@ -61,7 +61,7 @@ client import { addCredits } from "../lib/credits";
           }
         }
       >
-        ${r}
+        <sparkles enabled=(row === r || input.hoverRow === r)>${r}</sparkles>
       </button>
     </for>
     <for|c| of=cols>
@@ -77,7 +77,7 @@ client import { addCredits } from "../lib/credits";
           }
         }
       >
-        ${c}
+        <sparkles enabled=(col === c || input.hoverCol === c)>${c}</sparkles>
       </button>
     </for>
 

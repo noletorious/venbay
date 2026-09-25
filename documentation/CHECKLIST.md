@@ -6,9 +6,7 @@ Tracks the phase-1 build order from `INITIAL-PROMPT.MD`, plus what's queued up n
 
 ## Up next (in order)
 
-1. **Storybook refinement + testing** — flesh out Storybook further (more component coverage/configurations per the original ask: themes, a11y checks, custom button text+icon), then set up Vitest + `@marko/testing-library` for unit tests.
-2. **Possible reup on credits flow** — revisit how credits work (top-up mechanism is still just decorative copy right now — see "Known gaps" below).
-3. **Figma flow documentation** — Noel documents the determined UX flow in Figma, links it into `general-approach-notes.md`, which he'll adjust himself from there.
+1. **Figma flow documentation** — Noel documents the determined UX flow in Figma, links it into `general-approach-notes.md`, which he'll adjust himself from there.
 
 ## Phase 1 build order
 
@@ -17,16 +15,15 @@ Tracks the phase-1 build order from `INITIAL-PROMPT.MD`, plus what's queued up n
 - [x] 3. Build out left column card loop
 - [x] 4. Build out right column vending machine components
 - [x] 5. Build out search, be able to query
-- [x] 6. Setup Storybook with 3 stories (Button, TradingCard, SearchInput — CardModal added as a bonus 4th)
-- [ ] 7. Setup snapshots or unit tests — **not started**. Decided earlier: Vitest + `@marko/testing-library`, not yet installed/configured.
+- [x] 6. Setup Storybook — 4 stories (Search, VendingMachine, Card, CardList), a11y addon, light/dark theme toolbar
+- [x] 7. Setup unit + e2e tests — Vitest for `src/lib/*` (credits, card-cost, purchased-cards), Playwright for the dial → dispense → showcase/throw-away and credit top-up flows
 - [x] 8. Setup how to manage data — Unsplash fetch + caching via middleware, purchases/credits in localStorage
 - [x] 9. Purchasing interaction — keypad-driven, `/card/{id}` detail route, credit-gated
 - [x] 10. `/my-cards` route showing purchased cards, with a discard action
 
 ## Known gaps / things to prep before starting
 
-- **Tests (step 7)**: needs a decision pass before starting — what's actually worth testing here? Candidates: `card-cost.ts`/`credits.ts` (pure, easy unit tests), `trading-card` rendering (name/code/cost), `vending-machine` selection + disabled-when-insufficient-credit logic. Prep: confirm Vitest config approach won't collide with Storybook's separate webpack-free Vite setup.
-- **Credits top-up**: screen hint says "They top up automatically over time" but nothing implements that yet — purely decorative copy right now. Needs a real mechanism (time-based drip? fixed daily grant?) before it's not misleading.
+- **Credits top-up**: real mechanism now in place — a modal (fake card/Apple Pay flow) lets a user add credits up to a 100 cap; the actual daily-drip auto top-up (6/day at 12p PST) is still just documented in the modal copy, not yet driven by a real timestamp check on load.
 - **Card set persistence**: flagged earlier as a good improvement — currently every fresh `/` load (post cache-expiry or restart) re-rolls a new random 25, so a card a user was "about to buy" can disappear. Persisting the active set (plus a deliberate "refresh cards" action) is still open.
 - **Sass**: you'd mentioned wanting to see what Sass looks like at some point — never circled back. Still plain CSS + variables everywhere.
 - **Rare cards**: `rare` prop exists on `trading-card` (forces white title text on a full-saturation accent band) but nothing currently marks any real card as rare — no logic decides which cards get it.

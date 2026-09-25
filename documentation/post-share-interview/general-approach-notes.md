@@ -46,6 +46,10 @@ This was the biggest direction change in the session, worth flagging explicitly:
 - The package README's documented setup command (`npx sb init --type marko --builder webpack5`) no longer works — current Storybook CLI dropped "marko" from its built-in `--type` list.
 - Found `@storybook/marko-vite` by digging into the package's own test fixtures (not its README, which only documents webpack5), and set it up manually so Storybook shares the app's Vite toolchain instead of introducing a separate webpack build alongside it.
 
+## Storybook theme toolbar — renderer-agnostic over decorators
+- Wanted a light/dark toolbar control in Storybook. `@storybook/marko`'s decorator plumbing is renderer-specific and its exact story-wrapping signature wasn't worth reverse-engineering.
+- Used `globalTypes` (toolbar item) + a `loaders` hook in `preview.ts` that just sets `document.documentElement.dataset.theme = globals.theme` before each story renders. Loaders are a plain pre-render side-effect hook supported identically across every Storybook renderer, so it sidesteps Marko-specific decorator composition entirely.
+
 ## Shared theme CSS — two failed attempts before landing
 - Extracted CSS variables into `src/styles/theme.css` so both the app and Storybook's preview could use the same tokens.
 - First attempt: a `<link rel="stylesheet" href="../styles/theme.css">` in the layout's `<head>` — broke on nested routes (`/card/:id`) because the relative path resolves against the browser's current URL, not the source file location, and 404'd.

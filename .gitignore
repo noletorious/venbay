@@ -12,6 +12,8 @@ storybook-static/
 
 # test / coverage
 coverage/
+test-results/
+playwright-report/
 
 # editor / os
 .vscode/

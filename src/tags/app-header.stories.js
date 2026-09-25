@@ -1,7 +1,7 @@
 import AppHeader from "./app-header.marko";
 
 export default {
-  title: "Components/SearchInput",
+  title: "Components/Search",
   component: AppHeader,
 };
 

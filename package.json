@@ -9,10 +9,14 @@
   },
   "devDependencies": {
     "@marko/run": "^0.11.12",
+    "@playwright/test": "^1.49.0",
+    "@storybook/addon-a11y": "^10.1.0",
     "@storybook/marko": "^10.1.0",
     "@storybook/marko-vite": "^5.0.0",
     "@types/node": "^22.10.5",
-    "storybook": "^10.6.0"
+    "jsdom": "^25.0.1",
+    "storybook": "^10.6.0",
+    "vitest": "^2.1.8"
   },
   "private": true,
   "scripts": {
@@ -21,6 +25,9 @@
     "preview": "marko-run preview",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   }
 }

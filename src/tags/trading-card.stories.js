@@ -1,6 +1,7 @@
 import TradingCard from "./trading-card.marko";
 
 const mockCard = {
+  id: "venbay-fox",
   alt_description: "a red fox standing in a snowy field",
   description: null,
   color: "#C0392B",
@@ -19,7 +20,7 @@ const mockCard = {
 };
 
 export default {
-  title: "Components/TradingCard",
+  title: "Components/Card",
   component: TradingCard,
 };
 
@@ -27,13 +28,6 @@ export const Default = () => ({
   input: {
     card: mockCard,
     code: "A1",
-  },
-});
-
-export const NoDescription = () => ({
-  input: {
-    card: { ...mockCard, alt_description: null, description: null },
-    code: "C3",
   },
 });
 
