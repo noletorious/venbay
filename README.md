@@ -1,5 +1,7 @@
 # venbay
 
+<img src="/assets/readme-photo.png" width="500" />
+
 eBay's vending machine — buy digital trading cards sourced from the Unsplash API. Each card is styled like a trading card (unique name, image, type, stats), bought with credits earned over time. The concept extends to other things, like digital assets, ebay products, NFTs, etc.
 
 ## For Reviewers
