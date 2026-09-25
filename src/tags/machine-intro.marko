@@ -1,5 +1,6 @@
 client import * as THREE from "three";
 client import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+client import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 client import machineUrl from "../../assets/venbay-machine.glb?url";
 
 export interface Input {
@@ -143,7 +144,10 @@ export interface Input {
     };
     renderer.domElement.addEventListener("wheel", onWheel, { passive: false });
 
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.6/");
     const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
     loader.load(machineUrl, (gltf) => {
       const model = gltf.scene;
       const box = new THREE.Box3().setFromObject(model);
@@ -219,6 +223,7 @@ export interface Input {
         renderer.domElement.removeEventListener("pointermove", onPointerMove);
         renderer.domElement.removeEventListener("pointerup", onPointerUp);
         renderer.domElement.removeEventListener("wheel", onWheel);
+        dracoLoader.dispose();
         renderer.dispose();
         el.removeChild(renderer.domElement);
       },
