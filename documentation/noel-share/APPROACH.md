@@ -4,7 +4,9 @@ The goal was to simulate a vending machine experience. At it's core, the interac
 
 Early on, I found myself having to undo what was intuitive, like a dropshadow on hover on a card in the list. At first I had a click to open a modal, showing the card in someway. But I found that to be not so compelling and the concept of a card becames more blurry. Creating the card, like a card, warranted a dynamic card route. Which began the flow I committed to. I documented hour by hour in [time spent](documentation/noel-share/TIME-SPENT.md).
 
-Highest level, I approached in a **PHASE I** (MVP) and PHASE II (REFINE) approach. My initial designs:
+## Phase I vs II
+
+Phase I covers the functional requirements outlined in the take home document, the branch is `phase-1` branch. Phase II covers incorporating ebays component library minimally and a 3D intro scene, all in the `phase-2` branch. My initial designs:
 
 <img src="initial-sketch.jpg" width="600" />
 

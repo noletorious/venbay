@@ -4,10 +4,13 @@ eBay's vending machine — buy digital trading cards sourced from the Unsplash A
 
 ## For Reviewers
 
-Good place to start: A quick explainer of scope and dive into my dev/design thoughts: **[documentation/noel-share/APPROACH.md](documentation/noel-share/APPROACH.md)**.
+A good place to start, dive into my dev/design thoughts: **[documentation/noel-share/APPROACH.md](documentation/noel-share/APPROACH.md)**.
 
-Deployed: https://venbay-production.up.railway.app/
-Storybook: https://venbay-production-9615.up.railway.app/?path=/docs/welcome--docs
+- `phase-1` branch covers test requirements (MVP)
+- `phase-2` is a copy of the end of `phase-1` and has extra/bonus
+
+- Deployed: https://venbay-production.up.railway.app/
+- Storybook: https://venbay-production-9615.up.railway.app/?path=/docs/welcome--docs
 
 ## Getting started locally
 

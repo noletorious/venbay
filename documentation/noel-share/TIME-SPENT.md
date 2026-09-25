@@ -13,4 +13,4 @@
 4:14p - 5:35p addressing insufficient funds and adding credits, cleaning up my-cards view and UX when view/deleting, developing tests and refining storybook, clean up navbar, sparkle effect on dial keys, cleanup pass
 5:00p - 8:30p finalize MVP by updating documentation and describing thought process, setup deployments on Railway
 9:35 - 10:30p Further organize README and APPROACH, start Phase II. Start with building 3D scene.
-11:00 - XX:XX add in 3D object, add transition into UI handled by localStorge. Clean up documentation.
+11:00 - 12:05a add in 3D object, add transition into UI handled by localStorge. Clean up documentation.
